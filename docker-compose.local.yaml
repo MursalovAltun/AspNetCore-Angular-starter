@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  database:
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      SA_PASSWORD: "Qwertyu7!"
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    ports:
+      - "1433:1433"
+    volumes:
+      - projectname-mssql-data:/var/opt/mssql/data
+
+  azurite:
+    image: arafato/azurite
+    ports:
+      - 10000:10000
+      - 10001:10001
+      - 10002:10002
+    environment:
+      - executable=blob
+    volumes:
+      - ./Blob/:/opt/azurite/folder      
+   
+volumes:
+  projectname-mssql-data:

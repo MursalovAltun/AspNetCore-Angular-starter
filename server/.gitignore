@@ -1,0 +1,9 @@
+*.suo
+/.vs
+bin
+obj
+.vscode
+*.csproj.user
+/.idea
+wwwroot
+.DS_Store
