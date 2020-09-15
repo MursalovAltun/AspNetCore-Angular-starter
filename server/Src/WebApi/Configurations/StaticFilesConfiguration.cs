@@ -1,3 +1,4 @@
+using CompressedStaticFiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -9,7 +10,7 @@ namespace WebApi.Configurations
         {
             app.UseDefaultFiles();
 
-            app.UseStaticFiles(new StaticFileOptions
+            app.UseCompressedStaticFiles(new StaticFileOptions
             {
                 ContentTypeProvider = new FileExtensionContentTypeProvider
                 {
