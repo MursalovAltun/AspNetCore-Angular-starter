@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace WebApi.BuilderExtensions
+namespace WebApi.Configurations
 {
-    public static class CspExtension
+    public static class CspConfiguration
     {
         public static IApplicationBuilder UsePreconfiguredCsp(this IApplicationBuilder app)
         {
