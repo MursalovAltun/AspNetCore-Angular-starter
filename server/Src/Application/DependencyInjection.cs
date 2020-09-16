@@ -4,6 +4,7 @@ using Application.Auth;
 using Application.Auth.Identity;
 using Application.Auth.Webauthn;
 using Application.Components.Captcha;
+using Application.Components.EmailSender;
 using Application.Components.PushNotifications;
 using Application.Components.TodoItems;
 using Application.ExternalApi.TodoItems;
@@ -68,7 +69,30 @@ namespace Application
 
             services.ConfigureAndValidate<SignInConfiguration>(configuration.GetSection("SignIn"));
 
-            services.ConfigureAndValidate<PushNotificationsConfiguration>(configuration.GetSection("PushNotifications"));
+            var pushNotificationsConfiguration = configuration.GetSection("PushNotifications");
+            services.ConfigureAndValidate<PushNotificationsConfiguration>(pushNotificationsConfiguration);
+            
+            if (pushNotificationsConfiguration.Get<PushNotificationsConfiguration>()?.UseMailHog ?? false)
+            {
+                services.AddScoped<IPushNotificationsClient, MailHogPushNotificationsClient>();
+            }
+            else
+            {
+                services.AddScoped<IPushNotificationsClient, PushNotificationsClient>();
+            }
+            
+            var emailConfiguration = configuration.GetSection("EmailConfiguration");
+            services.ConfigureAndValidate<EmailConfiguration>(emailConfiguration);
+
+            if (emailConfiguration.Get<EmailConfiguration>()?.UseMailHog ?? false)
+            {
+                services.AddScoped<IEmailService, MailHogEmailService>();
+            }
+            else
+            {
+                services.AddScoped<IEmailService, SendGridEmailService>();
+                services.AddScoped<ISendGridClientContainer, SendGridClientContainer>();
+            }
 
             services.ConfigureAndValidate<CommonConfiguration>(configuration.GetSection("Common"));
 
