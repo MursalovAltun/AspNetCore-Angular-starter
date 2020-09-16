@@ -41,22 +41,19 @@ namespace Application.Auth
 
         public async Task<DateTime?> IsCaptchaRequired(User user)
         {
-            var sinceDate = _dateTimeProvider.UtcNow.AddMinutes(-_signInConfiguration.CaptchaLockoutMinutes);
+            var sinceDate = _dateTimeProvider.UtcNow.AddMinutes(-_signInConfiguration.CaptchaLockoutMinutes ?? 0);
             var recentAttempts = await _context.UserAccessFailedAttempts
                 .Where(uafa => uafa.UserId == user.Id && uafa.Date > sinceDate)
                 .ToListAsync();
 
-            if (recentAttempts.Count >= _signInConfiguration.FailedAttemptsCount)
-            {
-                var attemptDate = recentAttempts
-                    .OrderByDescending(uafa => uafa.Date)
-                    .Take(_signInConfiguration.FailedAttemptsCount)
-                    .Last().Date;
+            if (!(recentAttempts.Count >= _signInConfiguration.FailedAttemptsCount)) return null;
 
-                return attemptDate.AddMinutes(_signInConfiguration.CaptchaLockoutMinutes);
-            }
+            var attemptDate = recentAttempts
+                .OrderByDescending(uafa => uafa.Date)
+                .Take(_signInConfiguration.FailedAttemptsCount ?? 0)
+                .Last().Date;
 
-            return null;
+            return attemptDate.AddMinutes(_signInConfiguration.CaptchaLockoutMinutes ?? 0);
         }
     }
 }

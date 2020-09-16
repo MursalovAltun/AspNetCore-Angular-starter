@@ -7,6 +7,7 @@ using Application.Components.Captcha;
 using Application.Components.PushNotifications;
 using Application.Components.TodoItems;
 using Application.ExternalApi.TodoItems;
+using Application.OptionsValidation;
 using AutoMapper;
 using EF.Models;
 using EF.Models.Models;
@@ -61,19 +62,19 @@ namespace Application
         private static IServiceCollection AddConfigurations(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.Configure<JwtTokenOptions>(configuration.GetSection("JwtToken"));
+            services.ConfigureAndValidate<JwtTokenOptions>(configuration.GetSection("JwtToken"));
 
-            services.Configure<CaptchaOptions>(configuration.GetSection("Captcha"));
+            services.ConfigureAndValidate<CaptchaOptions>(configuration.GetSection("Captcha"));
 
-            services.Configure<SignInConfiguration>(configuration.GetSection("SignIn"));
+            services.ConfigureAndValidate<SignInConfiguration>(configuration.GetSection("SignIn"));
 
-            services.Configure<PushNotificationsConfiguration>(configuration.GetSection("PushNotifications"));
+            services.ConfigureAndValidate<PushNotificationsConfiguration>(configuration.GetSection("PushNotifications"));
 
-            services.Configure<CommonConfiguration>(configuration.GetSection("Common"));
+            services.ConfigureAndValidate<CommonConfiguration>(configuration.GetSection("Common"));
 
-            services.Configure<WebauthnConfiguration>(configuration.GetSection("Webauthn"));
+            services.ConfigureAndValidate<WebauthnConfiguration>(configuration.GetSection("Webauthn"));
 
-            services.Configure<ExternalTodoItemsApiOptions>(configuration.GetSection("ExternalApiTodoItems"));
+            services.ConfigureAndValidate<ExternalTodoItemsApiOptions>(configuration.GetSection("ExternalApiTodoItems"));
 
             return services;
         }

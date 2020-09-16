@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Application.ExternalApi.TodoItems
 {
     public class ExternalTodoItemsApiOptions
     {
-        public string Host { get; set; }
+        [Required] public string Host { get; set; }
     }
 }

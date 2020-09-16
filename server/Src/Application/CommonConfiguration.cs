@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Application
 {
     public class CommonConfiguration
     {
-        public string ClientBaseUrl { get; set; }
+        [Required] public string ClientBaseUrl { get; set; }
     }
 }
