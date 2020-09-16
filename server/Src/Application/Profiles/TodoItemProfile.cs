@@ -2,7 +2,7 @@ using Application.TodoItems;
 using AutoMapper;
 using EF.Models.Models;
 
-namespace Application.Components.TodoItems
+namespace Application.Profiles
 {
     public class TodoItemProfile : Profile
     {

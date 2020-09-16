@@ -1,0 +1,10 @@
+*.suo
+/.vs
+bin
+obj
+.vscode
+*.js
+*.csproj.user
+Blob
+/.idea
+.DS_Store

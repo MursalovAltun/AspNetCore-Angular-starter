@@ -1,9 +1,10 @@
-using Application.TodoItems;
+using Application.Components.TodoItems;
+using Application.Validators.UserItem;
 using Autofac.Extras.RegistrationAttributes.RegistrationAttributes;
 using EF.Models.Models;
 using FluentValidation;
 
-namespace Application.Components.TodoItems
+namespace Application.Validators.TodoItems
 {
     [As(typeof(IValidator<TodoItemUpdateDoneRequest>))]
     public class TodoItemUpdateDoneRequestValidator : AbstractValidator<TodoItemUpdateDoneRequest>
