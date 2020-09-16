@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.Common", "Tests\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "Tests\Application.UnitTests\Application.UnitTests.csproj", "{264215E0-5879-43AD-8C2C-2FB0F9F2F9B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.UnitTests", "Tests\WebApi.UnitTests\WebApi.UnitTests.csproj", "{E2915EAC-EB80-4696-911A-CD238AC546CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,9 +52,14 @@ Global
 		{264215E0-5879-43AD-8C2C-2FB0F9F2F9B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{264215E0-5879-43AD-8C2C-2FB0F9F2F9B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{264215E0-5879-43AD-8C2C-2FB0F9F2F9B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2915EAC-EB80-4696-911A-CD238AC546CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2915EAC-EB80-4696-911A-CD238AC546CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2915EAC-EB80-4696-911A-CD238AC546CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2915EAC-EB80-4696-911A-CD238AC546CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3FC443E0-33CD-49B8-A8B2-856C4FB9678D} = {A48B000D-02E9-4EED-9C63-F33017999564}
 		{264215E0-5879-43AD-8C2C-2FB0F9F2F9B3} = {A48B000D-02E9-4EED-9C63-F33017999564}
+		{E2915EAC-EB80-4696-911A-CD238AC546CB} = {A48B000D-02E9-4EED-9C63-F33017999564}
 	EndGlobalSection
 EndGlobal
