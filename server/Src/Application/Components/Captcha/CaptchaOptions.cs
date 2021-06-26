@@ -7,5 +7,6 @@ namespace Application.Components.Captcha
         [Required] public string Secret { get; set; }
         [Required] public string ClientKey { get; set; }
         [Required] public string VerificationUrl { get; set; }
+        public bool Enabled { get; set; }
     }
 }

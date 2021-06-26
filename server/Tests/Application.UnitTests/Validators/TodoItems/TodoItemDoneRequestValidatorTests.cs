@@ -5,9 +5,7 @@ using Application.Validators.UserItem;
 using Autofac.Extras.Moq;
 using EF.Models.Models;
 using FluentValidation.TestHelper;
-using FluentValidation.Validators;
 using Moq;
-using UnitTests.Common.Asserts;
 using Xunit;
 
 namespace Application.UnitTests.Validators.TodoItems
@@ -22,14 +20,6 @@ namespace Application.UnitTests.Validators.TodoItems
             _mock = AutoMock.GetLoose();
 
             _validator = _mock.Create<TodoItemUpdateDoneRequestValidator>();
-        }
-
-        [Fact]
-        public void HasAppropriateValidators()
-        {
-            _validator
-                .HasPropertyRule(request => request.TodoItemId)
-                .HasValidator<AsyncPredicateValidator>();
         }
 
         [Fact]

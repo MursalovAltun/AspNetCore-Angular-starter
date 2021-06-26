@@ -4,9 +4,7 @@ using Application.Validators.UserItem;
 using Autofac.Extras.Moq;
 using EF.Models.Models;
 using FluentValidation.TestHelper;
-using FluentValidation.Validators;
 using Moq;
-using UnitTests.Common.Asserts;
 using Xunit;
 
 namespace Application.UnitTests.Validators.TodoItems
@@ -24,14 +22,6 @@ namespace Application.UnitTests.Validators.TodoItems
         }
 
         [Fact]
-        public void HasAppropriateValidators()
-        {
-            _validator
-                .HasPropertyRule(request => request.Id)
-                .HasValidator<AsyncPredicateValidator>();
-        }
-
-        [Fact]
         public void Returns_Invalid_When_User_Has_No_Access()
         {
             var request = new TodoItemDeleteRequest
@@ -44,7 +34,7 @@ namespace Application.UnitTests.Validators.TodoItems
             _validator
                 .ShouldHaveValidationErrorFor(r => r.Id, request);
         }
-        
+
         [Fact]
         public void Returns_Invalid_When_Item_No_Exists()
         {

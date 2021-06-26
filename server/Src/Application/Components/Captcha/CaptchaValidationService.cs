@@ -26,6 +26,8 @@ namespace Application.Components.Captcha
 
         public async Task<bool> IsValidAsync(string validationToken)
         {
+            if (!_options.Enabled) return true;
+            
             if (string.IsNullOrEmpty(validationToken))
                 return false;
 

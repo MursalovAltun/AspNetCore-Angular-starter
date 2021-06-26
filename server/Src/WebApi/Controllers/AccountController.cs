@@ -34,7 +34,7 @@ namespace WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<AuthenticateResult> Create(AccountCreateRequest request)
+        public async Task<AuthenticateResult> Create([FromBody] AccountCreateRequest request)
         {
             var user = await _accountService.Create(request);
 
