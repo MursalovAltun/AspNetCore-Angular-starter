@@ -89,5 +89,12 @@ namespace Application.Components.TodoItems
 
             return _mapper.Map<TodoItemDto>(todoItem);
         }
+
+        public async Task DeleteAsync(TodoItemDeleteRequest request)
+        {
+            var item = await _context.TodoItems.FindAsync(request.Id);
+
+            _context.Remove(item);
+        }
     }
 }

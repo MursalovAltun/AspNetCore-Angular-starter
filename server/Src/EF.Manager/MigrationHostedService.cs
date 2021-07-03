@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EF.Models;
@@ -22,6 +23,8 @@ namespace EF.Manager
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             var context = Services.GetRequiredService<AppDbContext>();
+
+            var migrations = context.Database.GetMigrations().ToList();
 
             await context.Database.MigrateAsync(cancellationToken);
 

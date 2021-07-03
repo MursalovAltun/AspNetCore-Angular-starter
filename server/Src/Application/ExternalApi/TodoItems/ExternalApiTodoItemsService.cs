@@ -109,5 +109,10 @@ namespace Application.ExternalApi.TodoItems
 
             return todoItemDto;
         }
+
+        public Task DeleteAsync(TodoItemDeleteRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

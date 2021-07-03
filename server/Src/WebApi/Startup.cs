@@ -1,4 +1,5 @@
 using Application;
+using CompressedStaticFiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,8 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddConfiguredStaticFiles();
+            
             services.ConfigureControllers();
 
             services.AddApplication(Configuration);

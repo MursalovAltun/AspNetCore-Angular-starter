@@ -2,9 +2,7 @@ using Application.Components.TodoItems;
 using Application.Validators.TodoItems;
 using Autofac.Extras.Moq;
 using FluentValidation.TestHelper;
-using FluentValidation.Validators;
 using Moq;
-using UnitTests.Common.Asserts;
 using Xunit;
 
 namespace Application.UnitTests.Validators.TodoItems
@@ -19,14 +17,6 @@ namespace Application.UnitTests.Validators.TodoItems
             _mock = AutoMock.GetLoose();
 
             _validator = _mock.Create<TodoItemAddRequestValidator>();
-        }
-
-        [Fact]
-        public void HasAppropriateValidators()
-        {
-            _validator
-                .HasPropertyRule(request => request.Description)
-                .HasValidator<NotEmptyValidator, AsyncPredicateValidator>();
         }
 
         [Theory]
@@ -53,7 +43,7 @@ namespace Application.UnitTests.Validators.TodoItems
             {
                 Description = "description"
             };
-            
+
             SetValidationServices(request, FailedValidationService.TodoItemExists);
 
             _validator

@@ -8,6 +8,7 @@ namespace Application
         protected override void Load(ContainerBuilder builder)
         {
             builder.AutoRegistration(GetType().Assembly);
+            builder.RegisterModule<Common.AutoRegistrationModule>();
         }
     }
 }

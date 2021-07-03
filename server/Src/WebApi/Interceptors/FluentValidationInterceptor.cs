@@ -10,15 +10,12 @@ namespace WebApi.Interceptors
     [As(typeof(IValidatorInterceptor))]
     public class FluentValidationInterceptor : IValidatorInterceptor
     {
-        public IValidationContext BeforeMvcValidation(
-            ControllerContext controllerContext,
-            IValidationContext validationContext)
+        public IValidationContext BeforeAspNetValidation(ActionContext actionContext, IValidationContext commonContext)
         {
-            return validationContext;
+            return commonContext;
         }
 
-        public ValidationResult AfterMvcValidation(ControllerContext controllerContext,
-            IValidationContext validationContext,
+        public ValidationResult AfterAspNetValidation(ActionContext actionContext, IValidationContext validationContext,
             ValidationResult result)
         {
             if (result.Errors.Count > 0)

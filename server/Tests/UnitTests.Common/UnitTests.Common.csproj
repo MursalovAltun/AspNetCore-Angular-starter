@@ -1,15 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac.Extras.Moq" Version="5.0.1" />
-        <PackageReference Include="Moq" Version="4.14.5" />
-        <PackageReference Include="FluentValidation" Version="9.2.0" />
+        <PackageReference Include="Autofac.Extras.Moq" Version="6.0.0" />
+        <PackageReference Include="Moq" Version="4.16.1" />
+        <PackageReference Include="FluentValidation" Version="10.2.3" />
         <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="CompareNETObjects" Version="4.67.0" />
+        <PackageReference Include="CompareNETObjects" Version="4.73.0" />
     </ItemGroup>
 
     <ItemGroup>
