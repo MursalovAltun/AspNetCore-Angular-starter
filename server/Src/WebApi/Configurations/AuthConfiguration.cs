@@ -39,9 +39,11 @@ namespace WebApi.Configurations
 
         public static IApplicationBuilder UseConfiguredAuth(this IApplicationBuilder app)
         {
-            app.UseAuthorization();
-
             app.UseAuthentication();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
 
             return app;
         }

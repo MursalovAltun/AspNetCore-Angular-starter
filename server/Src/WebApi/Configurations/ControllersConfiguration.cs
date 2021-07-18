@@ -27,8 +27,6 @@ namespace WebApi.Configurations
 
         public static IApplicationBuilder UseConfiguredControllers(this IApplicationBuilder app)
         {
-            app.UseRouting();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             return app;

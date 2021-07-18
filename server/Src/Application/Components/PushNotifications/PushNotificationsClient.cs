@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Autofac.Extras.RegistrationAttributes.RegistrationAttributes;
 using Microsoft.Extensions.Options;
 using WebPush;
 using PushSubscription = EF.Models.Models.PushSubscription;
 
 namespace Application.Components.PushNotifications
 {
-    [As(typeof(IPushNotificationsClient))]
     public class PushNotificationsClient : IPushNotificationsClient
     {
         private readonly WebPushClient _webPushClient = new WebPushClient();
