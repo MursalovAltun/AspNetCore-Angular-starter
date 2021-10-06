@@ -1,6 +1,6 @@
 const authTokenKey = "example-access-token";
 
-export const getAuthToken = (): string | null => localStorage.getItem(authTokenKey)
+export const getAuthToken = (): string | null => localStorage.getItem(authTokenKey);
 
 export const setAuthToken = (token: string): void => {
   if (!token) {
@@ -8,4 +8,8 @@ export const setAuthToken = (token: string): void => {
   }
 
   localStorage.setItem(authTokenKey, token);
-}
+};
+
+export const reset = () => {
+  localStorage.removeItem(authTokenKey);
+};

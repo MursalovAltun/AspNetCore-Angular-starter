@@ -1212,6 +1212,8 @@ export interface IAccountCreateRequest {
 }
 
 export class UserDto implements IUserDto {
+    firstName?: string | undefined;
+    lastName?: string | undefined;
     languageCode?: string | undefined;
 
     constructor(data?: IUserDto) {
@@ -1225,6 +1227,8 @@ export class UserDto implements IUserDto {
 
     init(_data?: any) {
         if (_data) {
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
             this.languageCode = _data["languageCode"];
         }
     }
@@ -1238,6 +1242,8 @@ export class UserDto implements IUserDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
         data["languageCode"] = this.languageCode;
         return data; 
     }
@@ -1251,6 +1257,8 @@ export class UserDto implements IUserDto {
 }
 
 export interface IUserDto {
+    firstName?: string | undefined;
+    lastName?: string | undefined;
     languageCode?: string | undefined;
 }
 

@@ -9,7 +9,6 @@ using Application.Components.PushNotifications;
 using Application.Components.TodoItems;
 using Application.ExternalApi.TodoItems;
 using Application.OptionsValidation;
-using AutoMapper;
 using EF.Models;
 using EF.Models.Models;
 using Microsoft.AspNetCore.Identity;

@@ -1,0 +1,7 @@
+{
+  "endOfLine": "lf",
+  "singleQuote": false,
+  "printWidth": 120,
+  "arrowParens": "avoid",
+  "bracketSpacing": true
+}

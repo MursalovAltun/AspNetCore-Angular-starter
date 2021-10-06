@@ -10,13 +10,16 @@ const TodosList = () => {
     dispatch(fromTodos.loadList());
   }, [dispatch]);
 
-  return(
+  return (
     <div>
+      {(!todos || todos.length < 1) && <div>You have nothing to do. Please create one</div>}
       <ul>
-        {todos.map(todo => <li key={todo.id}>{todo.description}</li>)}
+        {todos.map(todo => (
+          <li key={todo.id}>{todo.description}</li>
+        ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
 export default TodosList;
