@@ -3,7 +3,7 @@ import { AppDispatch } from "./store";
 import { showSnackbar } from "../components/snackbarSlice";
 import copy from "fast-copy";
 import * as tokenManager from "../features/auth/token-manager";
-import * as fromAuth from "../features/auth/authSlice";
+import { AuthActions } from "../features/auth/actions";
 
 export const setAuthHeaderForRequest = (request: AxiosRequestConfig): AxiosRequestConfig => {
   const authToken = tokenManager.getAuthToken();
@@ -16,12 +16,17 @@ export const setAuthHeaderForRequest = (request: AxiosRequestConfig): AxiosReque
 };
 
 export const onResponseRejectedHandler = (error: AxiosError, dispatch: AppDispatch) => {
-  if (error.response?.status === 500) {
-    dispatch(showSnackbar({ message: "An unhandled error occurred.", type: "error" }));
+  if (!error.response || error.response?.status === 500) {
+    dispatch(
+      showSnackbar({
+        message: "An unhandled error occurred.",
+        type: "error",
+      })
+    );
   }
 
   if (error.response?.status === 401) {
-    dispatch(fromAuth.logout());
+    dispatch(AuthActions.logout());
   }
 
   if (error.response?.status === 400) {
@@ -40,6 +45,7 @@ export const setupInterceptors = (dispatch: AppDispatch) => {
     },
     (error: AxiosError) => {
       onResponseRejectedHandler(error, dispatch);
+      return Promise.reject(error);
     }
   );
 };

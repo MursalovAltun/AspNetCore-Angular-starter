@@ -1,47 +1,40 @@
-import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import { createLogger } from "redux-logger";
-import snackbarReducer from "../components/snackbarSlice";
-import todosReducer from "../features/todos/todosSlice";
-import authReducer from "../features/auth/authSlice";
+import { AnyAction, combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { createEpicMiddleware, Epic } from "redux-observable";
 import { createBrowserHistory } from "history";
+import storeLogger from "./store-logger";
+import snackbarReducer from "../components/snackbarSlice";
+import authReducer from "../features/auth/auth.reducer";
 import { connectRouter, routerMiddleware } from "connected-react-router";
-import { combineEpics, createEpicMiddleware } from "redux-observable";
-import { logoutEpic } from "../features/auth/auth.epics";
+import todosReducer from "../features/todos/todos.reducer";
+import rootEpic from "./epics";
 
 export const history = createBrowserHistory();
 
-const logger = createLogger({
-  duration: true,
-  timestamp: false,
-  collapsed: true,
-  colors: {
-    title: () => "#139BFE",
-    prevState: () => "#1C5FAF",
-    action: () => "#149945",
-    nextState: () => "#A47104",
-    error: () => "#ff0005",
-  },
+const reducer = combineReducers({
+  router: connectRouter(history),
+  auth: authReducer,
+  snackbar: snackbarReducer,
+  todos: todosReducer,
 });
 
-const rootEpic = combineEpics(logoutEpic);
+export type AppState = ReturnType<typeof reducer>;
+export type AppEpic = Epic<AnyAction, AnyAction, AppState>;
+export type AppStore = typeof store;
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
 
-const epicMiddleware = createEpicMiddleware();
+const epicMiddleware = createEpicMiddleware<AnyAction, AnyAction, AppState>();
 
 export const store = configureStore({
-  reducer: {
-    router: connectRouter(history) as any,
-    auth: authReducer,
-    snackbar: snackbarReducer,
-    todos: todosReducer,
-  },
-  middleware: getDefaultMiddleware => [
-    ...getDefaultMiddleware().concat(routerMiddleware(history)).concat(logger).concat(epicMiddleware),
+  reducer,
+  middleware: [
+    ...getDefaultMiddleware({
+      thunk: false,
+    }),
+    routerMiddleware(history),
+    epicMiddleware,
+    storeLogger,
   ],
 });
 
 epicMiddleware.run(rootEpic);
-
-export type AppStore = typeof store;
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;

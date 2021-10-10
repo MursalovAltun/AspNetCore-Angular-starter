@@ -9,17 +9,17 @@ import TodosList from "./features/todos/TodosList";
 import * as tokenManager from "./features/auth/token-manager";
 import Registration from "./features/auth/Registration";
 import { useAppDispatch } from "./app/hooks";
-import * as fromAuth from "./features/auth/authSlice";
+import { AuthActions } from "./features/auth/actions";
 
 function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fromAuth.me());
+    // dispatch(fromAuth.me());
   }, [dispatch]);
 
   const logout = () => {
-    dispatch(fromAuth.logout());
+    dispatch(AuthActions.logout());
   };
 
   return (

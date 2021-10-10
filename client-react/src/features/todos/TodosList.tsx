@@ -1,13 +1,14 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import * as fromTodos from "./todosSlice";
 import { useEffect } from "react";
+import { TodosCollectionActions } from "./actions";
+import { TodosCollectionSelectors } from "./selectors";
 
 const TodosList = () => {
-  const todos = useAppSelector(fromTodos.getAllTodos);
+  const todos = useAppSelector(TodosCollectionSelectors.getAllTodos);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fromTodos.loadList());
+    dispatch(TodosCollectionActions.loadList());
   }, [dispatch]);
 
   return (

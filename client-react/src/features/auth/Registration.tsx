@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { push } from "connected-react-router";
-import * as fromAuth from "./authSlice";
+import { AuthRegistrationActions } from "./actions";
 
 interface RegistrationFormProfile {
   email: string;
@@ -13,7 +13,7 @@ interface RegistrationFormProfile {
   lastName: string;
 }
 
-const schema = yup.object().shape({
+const schema: yup.SchemaOf<RegistrationFormProfile> = yup.object().shape({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   email: yup.string().required().email(),
@@ -35,7 +35,12 @@ const Registration = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data: RegistrationFormProfile) => {
-    dispatch(fromAuth.register({ ...data, captchaToken: "test" }));
+    dispatch(
+      AuthRegistrationActions.register({
+        ...data,
+        captchaToken: "test",
+      })
+    );
   };
 
   const navigateToLogin = () => {

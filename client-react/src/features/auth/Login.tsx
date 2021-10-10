@@ -2,8 +2,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../app/hooks";
-import * as fromAuth from "./authSlice";
 import { push } from "connected-react-router";
+import { AuthSignInActions } from "./actions";
 
 interface LoginFormProfile {
   email: string;
@@ -26,7 +26,7 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data: LoginFormProfile) => {
-    dispatch(fromAuth.authenticate({ ...data, captchaToken: "test" }));
+    dispatch(AuthSignInActions.signIn({ ...data, captchaToken: "test" }));
   };
 
   const navigateToRegistration = () => {

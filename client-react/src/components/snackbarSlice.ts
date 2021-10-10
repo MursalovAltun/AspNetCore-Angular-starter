@@ -1,42 +1,39 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
-import { Color } from "@material-ui/lab";
+import { AlertColor, SnackbarOrigin } from "@mui/material";
 
-const name = 'snackbar';
-
-export enum SnackbarType {
-  Success,
-  Warning,
-  Error,
-  Info
-}
+const name = "snackbar";
 
 export interface SnackbarState {
   open: boolean;
   message: string;
-  type: Color;
+  type: AlertColor;
+  position: SnackbarOrigin;
+  duration: number;
 }
 
 const initialState: SnackbarState = {
-  message: '',
+  message: "",
   open: false,
   type: "info",
-}
+  position: { horizontal: "center", vertical: "bottom" },
+  duration: 5000,
+};
 
 const snackbarSlice = createSlice({
   name,
   initialState,
   reducers: {
-    showSnackbar: (state, action: PayloadAction<{ message: string, type: Color }>) => {
+    showSnackbar: (state, action: PayloadAction<{ message: string; type: AlertColor }>) => {
       state.open = true;
       state.message = action.payload.message;
       state.type = action.payload.type;
     },
     closeSnackbar: state => {
       state.open = false;
-    }
-  }
-})
+    },
+  },
+});
 
 export const { showSnackbar, closeSnackbar } = snackbarSlice.actions;
 
