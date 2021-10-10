@@ -9,13 +9,7 @@
 
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
 
-export interface IAccountClient {
-    create(request: AccountCreateRequest): Promise<AuthenticateResult>;
-    emailIsTaken(email?: string | null | undefined): Promise<boolean>;
-    me(): Promise<UserDto>;
-}
-
-export class AccountClient implements IAccountClient {
+export class AccountClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -67,7 +61,7 @@ export class AccountClient implements IAccountClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = AuthenticateResult.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -116,7 +110,7 @@ export class AccountClient implements IAccountClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -163,7 +157,7 @@ export class AccountClient implements IAccountClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = UserDto.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -173,12 +167,7 @@ export class AccountClient implements IAccountClient {
     }
 }
 
-export interface IAuthClient {
-    authenticate(request: AuthenticateRequest): Promise<AuthenticateResult>;
-    getAuthMethods(email?: string | null | undefined): Promise<AuthMethods>;
-}
-
-export class AuthClient implements IAuthClient {
+export class AuthClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -230,7 +219,7 @@ export class AuthClient implements IAuthClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = AuthenticateResult.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -279,7 +268,7 @@ export class AuthClient implements IAuthClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = AuthMethods.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -289,12 +278,7 @@ export class AuthClient implements IAuthClient {
     }
 }
 
-export interface IPushSubscriptionsClient {
-    getPublicKey(): Promise<string>;
-    upsertSubscription(subscription: PushSubscriptionDto): Promise<void>;
-}
-
-export class PushSubscriptionsClient implements IPushSubscriptionsClient {
+export class PushSubscriptionsClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -342,7 +326,7 @@ export class PushSubscriptionsClient implements IPushSubscriptionsClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -399,11 +383,7 @@ export class PushSubscriptionsClient implements IPushSubscriptionsClient {
     }
 }
 
-export interface IAppSettingsClient {
-    get(): Promise<AppSettingsDto>;
-}
-
-export class AppSettingsClient implements IAppSettingsClient {
+export class AppSettingsClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -451,7 +431,7 @@ export class AppSettingsClient implements IAppSettingsClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = AppSettingsDto.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -461,14 +441,7 @@ export class AppSettingsClient implements IAppSettingsClient {
     }
 }
 
-export interface ITodoItemsClient {
-    get(): Promise<TodoItemDto[]>;
-    post(request: TodoItemAddRequest): Promise<TodoItemDto>;
-    put(request: TodoItemDto): Promise<TodoItemDto>;
-    delete(request: TodoItemDeleteRequest): Promise<void>;
-}
-
-export class TodoItemsClient implements ITodoItemsClient {
+export class TodoItemsClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -516,14 +489,7 @@ export class TodoItemsClient implements ITodoItemsClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(TodoItemDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -574,7 +540,7 @@ export class TodoItemsClient implements ITodoItemsClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = TodoItemDto.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -625,7 +591,7 @@ export class TodoItemsClient implements ITodoItemsClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = TodoItemDto.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -682,11 +648,7 @@ export class TodoItemsClient implements ITodoItemsClient {
     }
 }
 
-export interface IUserSettingsClient {
-    updateLanguage(languageCode?: string | null | undefined): Promise<void>;
-}
-
-export class UserSettingsClient implements IUserSettingsClient {
+export class UserSettingsClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -742,17 +704,7 @@ export class UserSettingsClient implements IUserSettingsClient {
     }
 }
 
-export interface IWebauthnClient {
-    getLoginOptions(userEmail: string): Promise<AssertionOptions>;
-    validateLogin(clientResponse: ValidateLoginDto): Promise<AuthenticateResult>;
-    getRegisterOptions(): Promise<CredentialCreateOptions>;
-    validateRegister(registerCredentialData: RegisterCredentialDto): Promise<WebauthnCredentialDto>;
-    getUserCredentials(): Promise<WebauthnCredentialDto[]>;
-    removeUserCredential(webauthnCredentialId?: string | null | undefined): Promise<void>;
-    editUserCredential(credential: WebauthnCredentialDto): Promise<void>;
-}
-
-export class WebauthnClient implements IWebauthnClient {
+export class WebauthnClient {
     private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -804,7 +756,7 @@ export class WebauthnClient implements IWebauthnClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = AssertionOptions.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -855,7 +807,7 @@ export class WebauthnClient implements IWebauthnClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = AuthenticateResult.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -902,7 +854,7 @@ export class WebauthnClient implements IWebauthnClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = CredentialCreateOptions.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -953,7 +905,7 @@ export class WebauthnClient implements IWebauthnClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = WebauthnCredentialDto.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1000,14 +952,7 @@ export class WebauthnClient implements IWebauthnClient {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(WebauthnCredentialDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = JSON.parse(resultData200);
             return result200;
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1109,101 +1054,11 @@ export class WebauthnClient implements IWebauthnClient {
     }
 }
 
-export class AuthenticateResult implements IAuthenticateResult {
-    token?: string | undefined;
-
-    constructor(data?: IAuthenticateResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.token = _data["token"];
-        }
-    }
-
-    static fromJS(data: any): AuthenticateResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthenticateResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["token"] = this.token;
-        return data; 
-    }
-
-    clone(): AuthenticateResult {
-        const json = this.toJSON();
-        let result = new AuthenticateResult();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAuthenticateResult {
+export interface AuthenticateResult {
     token?: string | undefined;
 }
 
-export class AccountCreateRequest implements IAccountCreateRequest {
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string | undefined;
-    password?: string | undefined;
-    captchaToken?: string | undefined;
-
-    constructor(data?: IAccountCreateRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.email = _data["email"];
-            this.password = _data["password"];
-            this.captchaToken = _data["captchaToken"];
-        }
-    }
-
-    static fromJS(data: any): AccountCreateRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new AccountCreateRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["email"] = this.email;
-        data["password"] = this.password;
-        data["captchaToken"] = this.captchaToken;
-        return data; 
-    }
-
-    clone(): AccountCreateRequest {
-        const json = this.toJSON();
-        let result = new AccountCreateRequest();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAccountCreateRequest {
+export interface AccountCreateRequest {
     firstName?: string | undefined;
     lastName?: string | undefined;
     email?: string | undefined;
@@ -1211,305 +1066,35 @@ export interface IAccountCreateRequest {
     captchaToken?: string | undefined;
 }
 
-export class UserDto implements IUserDto {
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    languageCode?: string | undefined;
-
-    constructor(data?: IUserDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.languageCode = _data["languageCode"];
-        }
-    }
-
-    static fromJS(data: any): UserDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["languageCode"] = this.languageCode;
-        return data; 
-    }
-
-    clone(): UserDto {
-        const json = this.toJSON();
-        let result = new UserDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUserDto {
+export interface UserDto {
     firstName?: string | undefined;
     lastName?: string | undefined;
     languageCode?: string | undefined;
 }
 
-export class AuthenticateRequest implements IAuthenticateRequest {
-    email?: string | undefined;
-    password?: string | undefined;
-    captchaToken?: string | undefined;
-
-    constructor(data?: IAuthenticateRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.password = _data["password"];
-            this.captchaToken = _data["captchaToken"];
-        }
-    }
-
-    static fromJS(data: any): AuthenticateRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthenticateRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["password"] = this.password;
-        data["captchaToken"] = this.captchaToken;
-        return data; 
-    }
-
-    clone(): AuthenticateRequest {
-        const json = this.toJSON();
-        let result = new AuthenticateRequest();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAuthenticateRequest {
+export interface AuthenticateRequest {
     email?: string | undefined;
     password?: string | undefined;
     captchaToken?: string | undefined;
 }
 
-export class AuthMethods implements IAuthMethods {
-    email?: string | undefined;
-    password!: boolean;
-    webAuthn!: boolean;
-
-    constructor(data?: IAuthMethods) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.password = _data["password"];
-            this.webAuthn = _data["webAuthn"];
-        }
-    }
-
-    static fromJS(data: any): AuthMethods {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthMethods();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["password"] = this.password;
-        data["webAuthn"] = this.webAuthn;
-        return data; 
-    }
-
-    clone(): AuthMethods {
-        const json = this.toJSON();
-        let result = new AuthMethods();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAuthMethods {
+export interface AuthMethods {
     email?: string | undefined;
     password: boolean;
     webAuthn: boolean;
 }
 
-export class PushSubscriptionDto implements IPushSubscriptionDto {
-    endpoint?: string | undefined;
-    auth?: string | undefined;
-    p256DH?: string | undefined;
-
-    constructor(data?: IPushSubscriptionDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.endpoint = _data["endpoint"];
-            this.auth = _data["auth"];
-            this.p256DH = _data["p256DH"];
-        }
-    }
-
-    static fromJS(data: any): PushSubscriptionDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PushSubscriptionDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["endpoint"] = this.endpoint;
-        data["auth"] = this.auth;
-        data["p256DH"] = this.p256DH;
-        return data; 
-    }
-
-    clone(): PushSubscriptionDto {
-        const json = this.toJSON();
-        let result = new PushSubscriptionDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPushSubscriptionDto {
+export interface PushSubscriptionDto {
     endpoint?: string | undefined;
     auth?: string | undefined;
     p256DH?: string | undefined;
 }
 
-export class AppSettingsDto implements IAppSettingsDto {
-    captchaClientKey?: string | undefined;
-
-    constructor(data?: IAppSettingsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.captchaClientKey = _data["captchaClientKey"];
-        }
-    }
-
-    static fromJS(data: any): AppSettingsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new AppSettingsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["captchaClientKey"] = this.captchaClientKey;
-        return data; 
-    }
-
-    clone(): AppSettingsDto {
-        const json = this.toJSON();
-        let result = new AppSettingsDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAppSettingsDto {
+export interface AppSettingsDto {
     captchaClientKey?: string | undefined;
 }
 
-export class TodoItemDto implements ITodoItemDto {
-    id!: string;
-    done!: boolean;
-    userId!: string;
-    description?: string | undefined;
-    lastModified!: Date;
-
-    constructor(data?: ITodoItemDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.done = _data["done"];
-            this.userId = _data["userId"];
-            this.description = _data["description"];
-            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): TodoItemDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TodoItemDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["done"] = this.done;
-        data["userId"] = this.userId;
-        data["description"] = this.description;
-        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : <any>undefined;
-        return data; 
-    }
-
-    clone(): TodoItemDto {
-        const json = this.toJSON();
-        let result = new TodoItemDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITodoItemDto {
+export interface TodoItemDto {
     id: string;
     done: boolean;
     userId: string;
@@ -1517,266 +1102,29 @@ export interface ITodoItemDto {
     lastModified: Date;
 }
 
-export class TodoItemAddRequest implements ITodoItemAddRequest {
-    description?: string | undefined;
-
-    constructor(data?: ITodoItemAddRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.description = _data["description"];
-        }
-    }
-
-    static fromJS(data: any): TodoItemAddRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new TodoItemAddRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["description"] = this.description;
-        return data; 
-    }
-
-    clone(): TodoItemAddRequest {
-        const json = this.toJSON();
-        let result = new TodoItemAddRequest();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITodoItemAddRequest {
+export interface TodoItemAddRequest {
     description?: string | undefined;
 }
 
-export class TodoItemDeleteRequest implements ITodoItemDeleteRequest {
-    id!: string;
-
-    constructor(data?: ITodoItemDeleteRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): TodoItemDeleteRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new TodoItemDeleteRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): TodoItemDeleteRequest {
-        const json = this.toJSON();
-        let result = new TodoItemDeleteRequest();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITodoItemDeleteRequest {
+export interface TodoItemDeleteRequest {
     id: string;
 }
 
-export abstract class Fido2ResponseBase implements IFido2ResponseBase {
-    status?: string | undefined;
-    errorMessage?: string | undefined;
-
-    constructor(data?: IFido2ResponseBase) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.status = _data["status"];
-            this.errorMessage = _data["errorMessage"];
-        }
-    }
-
-    static fromJS(data: any): Fido2ResponseBase {
-        data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'Fido2ResponseBase' cannot be instantiated.");
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["status"] = this.status;
-        data["errorMessage"] = this.errorMessage;
-        return data; 
-    }
-
-    clone(): Fido2ResponseBase {
-        throw new Error("The abstract class 'Fido2ResponseBase' cannot be instantiated.");
-    }
-}
-
-export interface IFido2ResponseBase {
+export interface Fido2ResponseBase {
     status?: string | undefined;
     errorMessage?: string | undefined;
 }
 
-export class AssertionOptions extends Fido2ResponseBase implements IAssertionOptions {
+export interface AssertionOptions extends Fido2ResponseBase {
     challenge?: string | undefined;
-    timeout!: number;
+    timeout: number;
     rpId?: string | undefined;
     allowCredentials?: PublicKeyCredentialDescriptor[] | undefined;
     userVerification?: UserVerificationRequirement | undefined;
     extensions?: AuthenticationExtensionsClientInputs | undefined;
-
-    constructor(data?: IAssertionOptions) {
-        super(data);
-        if (data) {
-            if (data.allowCredentials) {
-                this.allowCredentials = [];
-                for (let i = 0; i < data.allowCredentials.length; i++) {
-                    let item = data.allowCredentials[i];
-                    this.allowCredentials[i] = item && !(<any>item).toJSON ? new PublicKeyCredentialDescriptor(item) : <PublicKeyCredentialDescriptor>item;
-                }
-            }
-            this.extensions = data.extensions && !(<any>data.extensions).toJSON ? new AuthenticationExtensionsClientInputs(data.extensions) : <AuthenticationExtensionsClientInputs>this.extensions; 
-        }
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.challenge = _data["challenge"];
-            this.timeout = _data["timeout"];
-            this.rpId = _data["rpId"];
-            if (Array.isArray(_data["allowCredentials"])) {
-                this.allowCredentials = [] as any;
-                for (let item of _data["allowCredentials"])
-                    this.allowCredentials!.push(PublicKeyCredentialDescriptor.fromJS(item));
-            }
-            this.userVerification = _data["userVerification"];
-            this.extensions = _data["extensions"] ? AuthenticationExtensionsClientInputs.fromJS(_data["extensions"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): AssertionOptions {
-        data = typeof data === 'object' ? data : {};
-        let result = new AssertionOptions();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["challenge"] = this.challenge;
-        data["timeout"] = this.timeout;
-        data["rpId"] = this.rpId;
-        if (Array.isArray(this.allowCredentials)) {
-            data["allowCredentials"] = [];
-            for (let item of this.allowCredentials)
-                data["allowCredentials"].push(item.toJSON());
-        }
-        data["userVerification"] = this.userVerification;
-        data["extensions"] = this.extensions ? this.extensions.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data; 
-    }
-
-    clone(): AssertionOptions {
-        const json = this.toJSON();
-        let result = new AssertionOptions();
-        result.init(json);
-        return result;
-    }
 }
 
-export interface IAssertionOptions extends IFido2ResponseBase {
-    challenge?: string | undefined;
-    timeout: number;
-    rpId?: string | undefined;
-    allowCredentials?: IPublicKeyCredentialDescriptor[] | undefined;
-    userVerification?: UserVerificationRequirement | undefined;
-    extensions?: IAuthenticationExtensionsClientInputs | undefined;
-}
-
-export class PublicKeyCredentialDescriptor implements IPublicKeyCredentialDescriptor {
-    type?: PublicKeyCredentialType | undefined;
-    id?: string | undefined;
-    transports?: AuthenticatorTransport[] | undefined;
-
-    constructor(data?: IPublicKeyCredentialDescriptor) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.type = _data["type"];
-            this.id = _data["id"];
-            if (Array.isArray(_data["transports"])) {
-                this.transports = [] as any;
-                for (let item of _data["transports"])
-                    this.transports!.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): PublicKeyCredentialDescriptor {
-        data = typeof data === 'object' ? data : {};
-        let result = new PublicKeyCredentialDescriptor();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type;
-        data["id"] = this.id;
-        if (Array.isArray(this.transports)) {
-            data["transports"] = [];
-            for (let item of this.transports)
-                data["transports"].push(item);
-        }
-        return data; 
-    }
-
-    clone(): PublicKeyCredentialDescriptor {
-        const json = this.toJSON();
-        let result = new PublicKeyCredentialDescriptor();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPublicKeyCredentialDescriptor {
+export interface PublicKeyCredentialDescriptor {
     type?: PublicKeyCredentialType | undefined;
     id?: string | undefined;
     transports?: AuthenticatorTransport[] | undefined;
@@ -1800,8 +1148,8 @@ export enum UserVerificationRequirement {
     Discouraged = "discouraged",
 }
 
-export class AuthenticationExtensionsClientInputs implements IAuthenticationExtensionsClientInputs {
-    exampleExtension?: any | undefined;
+export interface AuthenticationExtensionsClientInputs {
+    "example.extension"?: any | undefined;
     appid?: string | undefined;
     txAuthSimple?: string | undefined;
     txAuthGenericArg?: TxAuthGenericArg | undefined;
@@ -1811,499 +1159,52 @@ export class AuthenticationExtensionsClientInputs implements IAuthenticationExte
     loc?: boolean | undefined;
     uvm?: boolean | undefined;
     biometricPerfBounds?: AuthenticatorBiometricPerfBounds | undefined;
-
-    constructor(data?: IAuthenticationExtensionsClientInputs) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.txAuthGenericArg = data.txAuthGenericArg && !(<any>data.txAuthGenericArg).toJSON ? new TxAuthGenericArg(data.txAuthGenericArg) : <TxAuthGenericArg>this.txAuthGenericArg; 
-            this.biometricPerfBounds = data.biometricPerfBounds && !(<any>data.biometricPerfBounds).toJSON ? new AuthenticatorBiometricPerfBounds(data.biometricPerfBounds) : <AuthenticatorBiometricPerfBounds>this.biometricPerfBounds; 
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.exampleExtension = _data["example.extension"];
-            this.appid = _data["appid"];
-            this.txAuthSimple = _data["txAuthSimple"];
-            this.txAuthGenericArg = _data["txAuthGenericArg"] ? TxAuthGenericArg.fromJS(_data["txAuthGenericArg"]) : <any>undefined;
-            if (Array.isArray(_data["authnSel"])) {
-                this.authnSel = [] as any;
-                for (let item of _data["authnSel"])
-                    this.authnSel!.push(item);
-            }
-            this.exts = _data["exts"];
-            this.uvi = _data["uvi"];
-            this.loc = _data["loc"];
-            this.uvm = _data["uvm"];
-            this.biometricPerfBounds = _data["biometricPerfBounds"] ? AuthenticatorBiometricPerfBounds.fromJS(_data["biometricPerfBounds"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): AuthenticationExtensionsClientInputs {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthenticationExtensionsClientInputs();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["example.extension"] = this.exampleExtension;
-        data["appid"] = this.appid;
-        data["txAuthSimple"] = this.txAuthSimple;
-        data["txAuthGenericArg"] = this.txAuthGenericArg ? this.txAuthGenericArg.toJSON() : <any>undefined;
-        if (Array.isArray(this.authnSel)) {
-            data["authnSel"] = [];
-            for (let item of this.authnSel)
-                data["authnSel"].push(item);
-        }
-        data["exts"] = this.exts;
-        data["uvi"] = this.uvi;
-        data["loc"] = this.loc;
-        data["uvm"] = this.uvm;
-        data["biometricPerfBounds"] = this.biometricPerfBounds ? this.biometricPerfBounds.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): AuthenticationExtensionsClientInputs {
-        const json = this.toJSON();
-        let result = new AuthenticationExtensionsClientInputs();
-        result.init(json);
-        return result;
-    }
 }
 
-export interface IAuthenticationExtensionsClientInputs {
-    exampleExtension?: any | undefined;
-    appid?: string | undefined;
-    txAuthSimple?: string | undefined;
-    txAuthGenericArg?: ITxAuthGenericArg | undefined;
-    authnSel?: string[] | undefined;
-    exts?: boolean | undefined;
-    uvi?: boolean | undefined;
-    loc?: boolean | undefined;
-    uvm?: boolean | undefined;
-    biometricPerfBounds?: IAuthenticatorBiometricPerfBounds | undefined;
-}
-
-export class TxAuthGenericArg implements ITxAuthGenericArg {
-    contentType?: string | undefined;
-    content?: string | undefined;
-
-    constructor(data?: ITxAuthGenericArg) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.contentType = _data["contentType"];
-            this.content = _data["content"];
-        }
-    }
-
-    static fromJS(data: any): TxAuthGenericArg {
-        data = typeof data === 'object' ? data : {};
-        let result = new TxAuthGenericArg();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["contentType"] = this.contentType;
-        data["content"] = this.content;
-        return data; 
-    }
-
-    clone(): TxAuthGenericArg {
-        const json = this.toJSON();
-        let result = new TxAuthGenericArg();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITxAuthGenericArg {
+export interface TxAuthGenericArg {
     contentType?: string | undefined;
     content?: string | undefined;
 }
 
-export class AuthenticatorBiometricPerfBounds implements IAuthenticatorBiometricPerfBounds {
-    fAR!: number;
-    fRR!: number;
-
-    constructor(data?: IAuthenticatorBiometricPerfBounds) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.fAR = _data["FAR"];
-            this.fRR = _data["FRR"];
-        }
-    }
-
-    static fromJS(data: any): AuthenticatorBiometricPerfBounds {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthenticatorBiometricPerfBounds();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["FAR"] = this.fAR;
-        data["FRR"] = this.fRR;
-        return data; 
-    }
-
-    clone(): AuthenticatorBiometricPerfBounds {
-        const json = this.toJSON();
-        let result = new AuthenticatorBiometricPerfBounds();
-        result.init(json);
-        return result;
-    }
+export interface AuthenticatorBiometricPerfBounds {
+    FAR: number;
+    FRR: number;
 }
 
-export interface IAuthenticatorBiometricPerfBounds {
-    fAR: number;
-    fRR: number;
-}
-
-export class ValidateLoginDto implements IValidateLoginDto {
+export interface ValidateLoginDto {
     userEmail?: string | undefined;
     assertionRawResponse?: AuthenticatorAssertionRawResponse | undefined;
-
-    constructor(data?: IValidateLoginDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.assertionRawResponse = data.assertionRawResponse && !(<any>data.assertionRawResponse).toJSON ? new AuthenticatorAssertionRawResponse(data.assertionRawResponse) : <AuthenticatorAssertionRawResponse>this.assertionRawResponse; 
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userEmail = _data["userEmail"];
-            this.assertionRawResponse = _data["assertionRawResponse"] ? AuthenticatorAssertionRawResponse.fromJS(_data["assertionRawResponse"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ValidateLoginDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ValidateLoginDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userEmail"] = this.userEmail;
-        data["assertionRawResponse"] = this.assertionRawResponse ? this.assertionRawResponse.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): ValidateLoginDto {
-        const json = this.toJSON();
-        let result = new ValidateLoginDto();
-        result.init(json);
-        return result;
-    }
 }
 
-export interface IValidateLoginDto {
-    userEmail?: string | undefined;
-    assertionRawResponse?: IAuthenticatorAssertionRawResponse | undefined;
-}
-
-export class AuthenticatorAssertionRawResponse implements IAuthenticatorAssertionRawResponse {
+export interface AuthenticatorAssertionRawResponse {
     id?: string | undefined;
     rawId?: string | undefined;
     response?: AssertionResponse | undefined;
     type?: PublicKeyCredentialType | undefined;
     extensions?: AuthenticationExtensionsClientOutputs | undefined;
-
-    constructor(data?: IAuthenticatorAssertionRawResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.response = data.response && !(<any>data.response).toJSON ? new AssertionResponse(data.response) : <AssertionResponse>this.response; 
-            this.extensions = data.extensions && !(<any>data.extensions).toJSON ? new AuthenticationExtensionsClientOutputs(data.extensions) : <AuthenticationExtensionsClientOutputs>this.extensions; 
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.rawId = _data["rawId"];
-            this.response = _data["response"] ? AssertionResponse.fromJS(_data["response"]) : <any>undefined;
-            this.type = _data["type"];
-            this.extensions = _data["extensions"] ? AuthenticationExtensionsClientOutputs.fromJS(_data["extensions"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): AuthenticatorAssertionRawResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthenticatorAssertionRawResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["rawId"] = this.rawId;
-        data["response"] = this.response ? this.response.toJSON() : <any>undefined;
-        data["type"] = this.type;
-        data["extensions"] = this.extensions ? this.extensions.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): AuthenticatorAssertionRawResponse {
-        const json = this.toJSON();
-        let result = new AuthenticatorAssertionRawResponse();
-        result.init(json);
-        return result;
-    }
 }
 
-export interface IAuthenticatorAssertionRawResponse {
-    id?: string | undefined;
-    rawId?: string | undefined;
-    response?: IAssertionResponse | undefined;
-    type?: PublicKeyCredentialType | undefined;
-    extensions?: IAuthenticationExtensionsClientOutputs | undefined;
-}
-
-export class AssertionResponse implements IAssertionResponse {
-    authenticatorData?: string | undefined;
-    signature?: string | undefined;
-    clientDataJson?: string | undefined;
-    userHandle?: string | undefined;
-
-    constructor(data?: IAssertionResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.authenticatorData = _data["authenticatorData"];
-            this.signature = _data["signature"];
-            this.clientDataJson = _data["clientDataJson"];
-            this.userHandle = _data["userHandle"];
-        }
-    }
-
-    static fromJS(data: any): AssertionResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new AssertionResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["authenticatorData"] = this.authenticatorData;
-        data["signature"] = this.signature;
-        data["clientDataJson"] = this.clientDataJson;
-        data["userHandle"] = this.userHandle;
-        return data; 
-    }
-
-    clone(): AssertionResponse {
-        const json = this.toJSON();
-        let result = new AssertionResponse();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAssertionResponse {
+export interface AssertionResponse {
     authenticatorData?: string | undefined;
     signature?: string | undefined;
     clientDataJson?: string | undefined;
     userHandle?: string | undefined;
 }
 
-export class AuthenticationExtensionsClientOutputs implements IAuthenticationExtensionsClientOutputs {
-    exampleExtension?: any | undefined;
-    appid!: boolean;
-    txAuthSimple?: string | undefined;
-    txAuthGenericArg?: string | undefined;
-    authnSel!: boolean;
-    exts?: string[] | undefined;
-    uvi?: string | undefined;
-    loc?: GeoCoordinate | undefined;
-    uvm?: number[][] | undefined;
-    biometricPerfBounds!: boolean;
-
-    constructor(data?: IAuthenticationExtensionsClientOutputs) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.loc = data.loc && !(<any>data.loc).toJSON ? new GeoCoordinate(data.loc) : <GeoCoordinate>this.loc; 
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.exampleExtension = _data["example.extension"];
-            this.appid = _data["appid"];
-            this.txAuthSimple = _data["txAuthSimple"];
-            this.txAuthGenericArg = _data["txAuthGenericArg"];
-            this.authnSel = _data["authnSel"];
-            if (Array.isArray(_data["exts"])) {
-                this.exts = [] as any;
-                for (let item of _data["exts"])
-                    this.exts!.push(item);
-            }
-            this.uvi = _data["uvi"];
-            this.loc = _data["loc"] ? GeoCoordinate.fromJS(_data["loc"]) : <any>undefined;
-            if (Array.isArray(_data["uvm"])) {
-                this.uvm = [] as any;
-                for (let item of _data["uvm"])
-                    this.uvm!.push(item);
-            }
-            this.biometricPerfBounds = _data["biometricPerfBounds"];
-        }
-    }
-
-    static fromJS(data: any): AuthenticationExtensionsClientOutputs {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthenticationExtensionsClientOutputs();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["example.extension"] = this.exampleExtension;
-        data["appid"] = this.appid;
-        data["txAuthSimple"] = this.txAuthSimple;
-        data["txAuthGenericArg"] = this.txAuthGenericArg;
-        data["authnSel"] = this.authnSel;
-        if (Array.isArray(this.exts)) {
-            data["exts"] = [];
-            for (let item of this.exts)
-                data["exts"].push(item);
-        }
-        data["uvi"] = this.uvi;
-        data["loc"] = this.loc ? this.loc.toJSON() : <any>undefined;
-        if (Array.isArray(this.uvm)) {
-            data["uvm"] = [];
-            for (let item of this.uvm)
-                data["uvm"].push(item);
-        }
-        data["biometricPerfBounds"] = this.biometricPerfBounds;
-        return data; 
-    }
-
-    clone(): AuthenticationExtensionsClientOutputs {
-        const json = this.toJSON();
-        let result = new AuthenticationExtensionsClientOutputs();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAuthenticationExtensionsClientOutputs {
-    exampleExtension?: any | undefined;
+export interface AuthenticationExtensionsClientOutputs {
+    "example.extension"?: any | undefined;
     appid: boolean;
     txAuthSimple?: string | undefined;
     txAuthGenericArg?: string | undefined;
     authnSel: boolean;
     exts?: string[] | undefined;
     uvi?: string | undefined;
-    loc?: IGeoCoordinate | undefined;
+    loc?: GeoCoordinate | undefined;
     uvm?: number[][] | undefined;
     biometricPerfBounds: boolean;
 }
 
-export class GeoCoordinate implements IGeoCoordinate {
-    latitude!: number;
-    longitude!: number;
-    horizontalAccuracy!: number;
-    verticalAccuracy!: number;
-    speed!: number;
-    course!: number;
-    isUnknown!: boolean;
-    altitude!: number;
-
-    constructor(data?: IGeoCoordinate) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.latitude = _data["latitude"];
-            this.longitude = _data["longitude"];
-            this.horizontalAccuracy = _data["horizontalAccuracy"];
-            this.verticalAccuracy = _data["verticalAccuracy"];
-            this.speed = _data["speed"];
-            this.course = _data["course"];
-            this.isUnknown = _data["isUnknown"];
-            this.altitude = _data["altitude"];
-        }
-    }
-
-    static fromJS(data: any): GeoCoordinate {
-        data = typeof data === 'object' ? data : {};
-        let result = new GeoCoordinate();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["latitude"] = this.latitude;
-        data["longitude"] = this.longitude;
-        data["horizontalAccuracy"] = this.horizontalAccuracy;
-        data["verticalAccuracy"] = this.verticalAccuracy;
-        data["speed"] = this.speed;
-        data["course"] = this.course;
-        data["isUnknown"] = this.isUnknown;
-        data["altitude"] = this.altitude;
-        return data; 
-    }
-
-    clone(): GeoCoordinate {
-        const json = this.toJSON();
-        let result = new GeoCoordinate();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGeoCoordinate {
+export interface GeoCoordinate {
     latitude: number;
     longitude: number;
     horizontalAccuracy: number;
@@ -2314,255 +1215,30 @@ export interface IGeoCoordinate {
     altitude: number;
 }
 
-export class CredentialCreateOptions extends Fido2ResponseBase implements ICredentialCreateOptions {
+export interface CredentialCreateOptions extends Fido2ResponseBase {
     rp?: Rp | undefined;
     user?: Fido2User | undefined;
     challenge?: string | undefined;
     pubKeyCredParams?: PubKeyCredParam[] | undefined;
-    timeout!: number;
-    attestation!: AttestationConveyancePreference;
+    timeout: number;
+    attestation: AttestationConveyancePreference;
     authenticatorSelection?: AuthenticatorSelection | undefined;
     excludeCredentials?: PublicKeyCredentialDescriptor[] | undefined;
     extensions?: AuthenticationExtensionsClientInputs | undefined;
-
-    constructor(data?: ICredentialCreateOptions) {
-        super(data);
-        if (data) {
-            this.rp = data.rp && !(<any>data.rp).toJSON ? new Rp(data.rp) : <Rp>this.rp; 
-            this.user = data.user && !(<any>data.user).toJSON ? new Fido2User(data.user) : <Fido2User>this.user; 
-            if (data.pubKeyCredParams) {
-                this.pubKeyCredParams = [];
-                for (let i = 0; i < data.pubKeyCredParams.length; i++) {
-                    let item = data.pubKeyCredParams[i];
-                    this.pubKeyCredParams[i] = item && !(<any>item).toJSON ? new PubKeyCredParam(item) : <PubKeyCredParam>item;
-                }
-            }
-            this.authenticatorSelection = data.authenticatorSelection && !(<any>data.authenticatorSelection).toJSON ? new AuthenticatorSelection(data.authenticatorSelection) : <AuthenticatorSelection>this.authenticatorSelection; 
-            if (data.excludeCredentials) {
-                this.excludeCredentials = [];
-                for (let i = 0; i < data.excludeCredentials.length; i++) {
-                    let item = data.excludeCredentials[i];
-                    this.excludeCredentials[i] = item && !(<any>item).toJSON ? new PublicKeyCredentialDescriptor(item) : <PublicKeyCredentialDescriptor>item;
-                }
-            }
-            this.extensions = data.extensions && !(<any>data.extensions).toJSON ? new AuthenticationExtensionsClientInputs(data.extensions) : <AuthenticationExtensionsClientInputs>this.extensions; 
-        }
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.rp = _data["rp"] ? Rp.fromJS(_data["rp"]) : <any>undefined;
-            this.user = _data["user"] ? Fido2User.fromJS(_data["user"]) : <any>undefined;
-            this.challenge = _data["challenge"];
-            if (Array.isArray(_data["pubKeyCredParams"])) {
-                this.pubKeyCredParams = [] as any;
-                for (let item of _data["pubKeyCredParams"])
-                    this.pubKeyCredParams!.push(PubKeyCredParam.fromJS(item));
-            }
-            this.timeout = _data["timeout"];
-            this.attestation = _data["attestation"];
-            this.authenticatorSelection = _data["authenticatorSelection"] ? AuthenticatorSelection.fromJS(_data["authenticatorSelection"]) : <any>undefined;
-            if (Array.isArray(_data["excludeCredentials"])) {
-                this.excludeCredentials = [] as any;
-                for (let item of _data["excludeCredentials"])
-                    this.excludeCredentials!.push(PublicKeyCredentialDescriptor.fromJS(item));
-            }
-            this.extensions = _data["extensions"] ? AuthenticationExtensionsClientInputs.fromJS(_data["extensions"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): CredentialCreateOptions {
-        data = typeof data === 'object' ? data : {};
-        let result = new CredentialCreateOptions();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["rp"] = this.rp ? this.rp.toJSON() : <any>undefined;
-        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
-        data["challenge"] = this.challenge;
-        if (Array.isArray(this.pubKeyCredParams)) {
-            data["pubKeyCredParams"] = [];
-            for (let item of this.pubKeyCredParams)
-                data["pubKeyCredParams"].push(item.toJSON());
-        }
-        data["timeout"] = this.timeout;
-        data["attestation"] = this.attestation;
-        data["authenticatorSelection"] = this.authenticatorSelection ? this.authenticatorSelection.toJSON() : <any>undefined;
-        if (Array.isArray(this.excludeCredentials)) {
-            data["excludeCredentials"] = [];
-            for (let item of this.excludeCredentials)
-                data["excludeCredentials"].push(item.toJSON());
-        }
-        data["extensions"] = this.extensions ? this.extensions.toJSON() : <any>undefined;
-        super.toJSON(data);
-        return data; 
-    }
-
-    clone(): CredentialCreateOptions {
-        const json = this.toJSON();
-        let result = new CredentialCreateOptions();
-        result.init(json);
-        return result;
-    }
 }
 
-export interface ICredentialCreateOptions extends IFido2ResponseBase {
-    rp?: IRp | undefined;
-    user?: IFido2User | undefined;
-    challenge?: string | undefined;
-    pubKeyCredParams?: IPubKeyCredParam[] | undefined;
-    timeout: number;
-    attestation: AttestationConveyancePreference;
-    authenticatorSelection?: IAuthenticatorSelection | undefined;
-    excludeCredentials?: IPublicKeyCredentialDescriptor[] | undefined;
-    extensions?: IAuthenticationExtensionsClientInputs | undefined;
-}
-
-export class Rp implements IRp {
-    id?: string | undefined;
-    name?: string | undefined;
-
-    constructor(data?: IRp) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any): Rp {
-        data = typeof data === 'object' ? data : {};
-        let result = new Rp();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data; 
-    }
-
-    clone(): Rp {
-        const json = this.toJSON();
-        let result = new Rp();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IRp {
+export interface Rp {
     id?: string | undefined;
     name?: string | undefined;
 }
 
-export class Fido2User implements IFido2User {
-    name?: string | undefined;
-    id?: string | undefined;
-    displayName?: string | undefined;
-
-    constructor(data?: IFido2User) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.id = _data["id"];
-            this.displayName = _data["displayName"];
-        }
-    }
-
-    static fromJS(data: any): Fido2User {
-        data = typeof data === 'object' ? data : {};
-        let result = new Fido2User();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["id"] = this.id;
-        data["displayName"] = this.displayName;
-        return data; 
-    }
-
-    clone(): Fido2User {
-        const json = this.toJSON();
-        let result = new Fido2User();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IFido2User {
+export interface Fido2User {
     name?: string | undefined;
     id?: string | undefined;
     displayName?: string | undefined;
 }
 
-export class PubKeyCredParam implements IPubKeyCredParam {
-    type!: PublicKeyCredentialType;
-    alg!: number;
-
-    constructor(data?: IPubKeyCredParam) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.type = _data["type"];
-            this.alg = _data["alg"];
-        }
-    }
-
-    static fromJS(data: any): PubKeyCredParam {
-        data = typeof data === 'object' ? data : {};
-        let result = new PubKeyCredParam();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type;
-        data["alg"] = this.alg;
-        return data; 
-    }
-
-    clone(): PubKeyCredParam {
-        const json = this.toJSON();
-        let result = new PubKeyCredParam();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPubKeyCredParam {
+export interface PubKeyCredParam {
     type: PublicKeyCredentialType;
     alg: number;
 }
@@ -2573,52 +1249,7 @@ export enum AttestationConveyancePreference {
     Direct = "direct",
 }
 
-export class AuthenticatorSelection implements IAuthenticatorSelection {
-    authenticatorAttachment?: AuthenticatorAttachment | undefined;
-    requireResidentKey!: boolean;
-    userVerification!: UserVerificationRequirement;
-
-    constructor(data?: IAuthenticatorSelection) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.authenticatorAttachment = _data["authenticatorAttachment"];
-            this.requireResidentKey = _data["requireResidentKey"];
-            this.userVerification = _data["userVerification"];
-        }
-    }
-
-    static fromJS(data: any): AuthenticatorSelection {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthenticatorSelection();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["authenticatorAttachment"] = this.authenticatorAttachment;
-        data["requireResidentKey"] = this.requireResidentKey;
-        data["userVerification"] = this.userVerification;
-        return data; 
-    }
-
-    clone(): AuthenticatorSelection {
-        const json = this.toJSON();
-        let result = new AuthenticatorSelection();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IAuthenticatorSelection {
+export interface AuthenticatorSelection {
     authenticatorAttachment?: AuthenticatorAttachment | undefined;
     requireResidentKey: boolean;
     userVerification: UserVerificationRequirement;
@@ -2629,209 +1260,26 @@ export enum AuthenticatorAttachment {
     CrossPlatform = "cross-platform",
 }
 
-export class WebauthnCredentialDto implements IWebauthnCredentialDto {
-    id!: string;
-    name?: string | undefined;
-    createdOn!: Date;
-
-    constructor(data?: IWebauthnCredentialDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.createdOn = _data["createdOn"] ? new Date(_data["createdOn"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): WebauthnCredentialDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new WebauthnCredentialDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["createdOn"] = this.createdOn ? this.createdOn.toISOString() : <any>undefined;
-        return data; 
-    }
-
-    clone(): WebauthnCredentialDto {
-        const json = this.toJSON();
-        let result = new WebauthnCredentialDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IWebauthnCredentialDto {
+export interface WebauthnCredentialDto {
     id: string;
     name?: string | undefined;
     createdOn: Date;
 }
 
-export class RegisterCredentialDto implements IRegisterCredentialDto {
+export interface RegisterCredentialDto {
     authenticatorName?: string | undefined;
     attestationRawResponse?: AuthenticatorAttestationRawResponse | undefined;
-
-    constructor(data?: IRegisterCredentialDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.attestationRawResponse = data.attestationRawResponse && !(<any>data.attestationRawResponse).toJSON ? new AuthenticatorAttestationRawResponse(data.attestationRawResponse) : <AuthenticatorAttestationRawResponse>this.attestationRawResponse; 
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.authenticatorName = _data["authenticatorName"];
-            this.attestationRawResponse = _data["attestationRawResponse"] ? AuthenticatorAttestationRawResponse.fromJS(_data["attestationRawResponse"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): RegisterCredentialDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterCredentialDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["authenticatorName"] = this.authenticatorName;
-        data["attestationRawResponse"] = this.attestationRawResponse ? this.attestationRawResponse.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): RegisterCredentialDto {
-        const json = this.toJSON();
-        let result = new RegisterCredentialDto();
-        result.init(json);
-        return result;
-    }
 }
 
-export interface IRegisterCredentialDto {
-    authenticatorName?: string | undefined;
-    attestationRawResponse?: IAuthenticatorAttestationRawResponse | undefined;
-}
-
-export class AuthenticatorAttestationRawResponse implements IAuthenticatorAttestationRawResponse {
+export interface AuthenticatorAttestationRawResponse {
     id?: string | undefined;
     rawId?: string | undefined;
     type?: PublicKeyCredentialType | undefined;
     response?: ResponseData | undefined;
     extensions?: AuthenticationExtensionsClientOutputs | undefined;
-
-    constructor(data?: IAuthenticatorAttestationRawResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-            this.response = data.response && !(<any>data.response).toJSON ? new ResponseData(data.response) : <ResponseData>this.response; 
-            this.extensions = data.extensions && !(<any>data.extensions).toJSON ? new AuthenticationExtensionsClientOutputs(data.extensions) : <AuthenticationExtensionsClientOutputs>this.extensions; 
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.rawId = _data["rawId"];
-            this.type = _data["type"];
-            this.response = _data["response"] ? ResponseData.fromJS(_data["response"]) : <any>undefined;
-            this.extensions = _data["extensions"] ? AuthenticationExtensionsClientOutputs.fromJS(_data["extensions"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): AuthenticatorAttestationRawResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new AuthenticatorAttestationRawResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["rawId"] = this.rawId;
-        data["type"] = this.type;
-        data["response"] = this.response ? this.response.toJSON() : <any>undefined;
-        data["extensions"] = this.extensions ? this.extensions.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): AuthenticatorAttestationRawResponse {
-        const json = this.toJSON();
-        let result = new AuthenticatorAttestationRawResponse();
-        result.init(json);
-        return result;
-    }
 }
 
-export interface IAuthenticatorAttestationRawResponse {
-    id?: string | undefined;
-    rawId?: string | undefined;
-    type?: PublicKeyCredentialType | undefined;
-    response?: IResponseData | undefined;
-    extensions?: IAuthenticationExtensionsClientOutputs | undefined;
-}
-
-export class ResponseData implements IResponseData {
-    attestationObject?: string | undefined;
-    clientDataJson?: string | undefined;
-
-    constructor(data?: IResponseData) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.attestationObject = _data["attestationObject"];
-            this.clientDataJson = _data["clientDataJson"];
-        }
-    }
-
-    static fromJS(data: any): ResponseData {
-        data = typeof data === 'object' ? data : {};
-        let result = new ResponseData();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["attestationObject"] = this.attestationObject;
-        data["clientDataJson"] = this.clientDataJson;
-        return data; 
-    }
-
-    clone(): ResponseData {
-        const json = this.toJSON();
-        let result = new ResponseData();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IResponseData {
+export interface ResponseData {
     attestationObject?: string | undefined;
     clientDataJson?: string | undefined;
 }

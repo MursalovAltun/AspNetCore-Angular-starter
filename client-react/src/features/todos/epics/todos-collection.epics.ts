@@ -2,7 +2,7 @@ import { AppEpic } from "../../../app/store";
 import { filter, map, switchMap } from "rxjs/operators";
 import { TodosCollectionActions } from "../actions";
 import createApiClient from "../../../app/create-api-client";
-import { ITodoItemDto, TodoItemsClient } from "../../../app/api";
+import { TodoItemsClient } from "../../../app/api";
 import { from } from "rxjs";
 
 export const loadListEpic: AppEpic = action$ =>
@@ -10,7 +10,17 @@ export const loadListEpic: AppEpic = action$ =>
     filter(TodosCollectionActions.loadList.match),
     switchMap(() =>
       from(createApiClient(TodoItemsClient).get()).pipe(
-        map(response => TodosCollectionActions.loadListSuccess(response as ITodoItemDto[]))
+        map(response => TodosCollectionActions.loadListSuccess(response))
+      )
+    )
+  );
+
+export const addEpic: AppEpic = action$ =>
+  action$.pipe(
+    filter(TodosCollectionActions.add.match),
+    switchMap(({ payload }) =>
+      from(createApiClient(TodoItemsClient).post(payload)).pipe(
+        map(response => TodosCollectionActions.addSuccess(response))
       )
     )
   );

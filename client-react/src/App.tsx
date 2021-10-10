@@ -10,6 +10,7 @@ import * as tokenManager from "./features/auth/token-manager";
 import Registration from "./features/auth/Registration";
 import { useAppDispatch } from "./app/hooks";
 import { AuthActions } from "./features/auth/actions";
+import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -45,6 +46,10 @@ function App() {
           render={() => (!!tokenManager.getAuthToken() ? <TodosList /> : <Redirect to="/login" />)}
         />
       </Switch>
+
+      <BottomNavigation value={"todos"}>
+        <BottomNavigationAction label="Todos" value="todos" />
+      </BottomNavigation>
     </ConnectedRouter>
   );
 }

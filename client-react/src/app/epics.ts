@@ -11,7 +11,8 @@ const epics = combineEpics(
   AuthSignInEpics.signInEpic,
   AuthSignInEpics.signInSuccessEpic,
   AuthRegistrationEpics.register,
-  TodosCollectionEpics.loadListEpic
+  TodosCollectionEpics.loadListEpic,
+  TodosCollectionEpics.addEpic
 );
 
 const rootEpic: AppEpic = (action$, store$, dependencies) =>

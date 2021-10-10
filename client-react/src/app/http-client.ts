@@ -34,7 +34,9 @@ export const onResponseRejectedHandler = (error: AxiosError, dispatch: AppDispat
   }
 };
 
-const httpClient = axios.create();
+const httpClient = axios.create({
+  transformResponse: data => data,
+});
 
 export const setupInterceptors = (dispatch: AppDispatch) => {
   httpClient.interceptors.request.use(request => setAuthHeaderForRequest(request));

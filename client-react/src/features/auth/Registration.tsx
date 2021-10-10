@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { push } from "connected-react-router";
 import { AuthRegistrationActions } from "./actions";
+import createApiClient from "../../app/create-api-client";
+import { AccountClient } from "../../app/api";
 
 interface RegistrationFormProfile {
   email: string;
@@ -16,7 +18,15 @@ interface RegistrationFormProfile {
 const schema: yup.SchemaOf<RegistrationFormProfile> = yup.object().shape({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
-  email: yup.string().required().email(),
+  email: yup
+    .string()
+    .required()
+    .email()
+    .test(
+      "duplicate",
+      "This email is already taken",
+      async email => !(await createApiClient(AccountClient).emailIsTaken(email))
+    ),
   password: yup.string().required(),
   confirmPassword: yup
     .string()

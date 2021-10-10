@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
-import { IAccountCreateRequest } from "../../../app/api";
 import featureKey from "../feature-key";
+import { AccountCreateRequest } from "../../../app/api";
 
-export const register = createAction<IAccountCreateRequest>(`${featureKey} REGISTER`);
+export const register = createAction<AccountCreateRequest>(`${featureKey} REGISTER`);
 
 export const registerSuccess = createAction<{ currentUserId: string }>(`${featureKey} REGISTER`);

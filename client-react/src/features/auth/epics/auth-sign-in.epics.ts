@@ -1,7 +1,7 @@
 import { filter, map, mapTo, switchMap, tap } from "rxjs/operators";
 import { AuthSignInActions } from "../actions";
 import createApiClient from "../../../app/create-api-client";
-import { AuthClient, AuthenticateRequest } from "../../../app/api";
+import { AuthClient } from "../../../app/api";
 import { from } from "rxjs";
 import * as tokenManager from "../token-manager";
 import jwtDecode from "jwt-decode";
@@ -13,7 +13,7 @@ export const signInEpic: AppEpic = action$ =>
   action$.pipe(
     filter(AuthSignInActions.signIn.match),
     switchMap(({ payload }) =>
-      from(createApiClient(AuthClient).authenticate(new AuthenticateRequest(payload))).pipe(
+      from(createApiClient(AuthClient).authenticate(payload)).pipe(
         tap(({ token }) => tokenManager.setAuthToken(token!)),
         map(({ token }) => jwtDecode<TokenPayload>(token!)),
         map(({ nameid }) => AuthSignInActions.signInSuccess({ currentUserId: nameid }))
