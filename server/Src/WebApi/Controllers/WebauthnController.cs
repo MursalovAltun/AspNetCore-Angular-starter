@@ -232,14 +232,14 @@ namespace WebApi.Controllers
         private void SetupFidoLibrary()
         {
             var mdsAccessKey = _webauthnConfiguration.MDSAccessKey;
-            _mds = string.IsNullOrEmpty(mdsAccessKey)
-                ? null
-                : MDSMetadata.Instance(mdsAccessKey, _webauthnConfiguration.MDSCacheDirPath);
-            if (null != _mds)
-            {
-                if (false == _mds.IsInitialized())
-                    _mds.Initialize().Wait();
-            }
+            // _mds = string.IsNullOrEmpty(mdsAccessKey)
+            //     ? null
+            //     : MDSMetadata.Instance(mdsAccessKey, _webauthnConfiguration.MDSCacheDirPath);
+            // if (null != _mds)
+            // {
+            //     if (false == _mds.IsInitialized())
+            //         _mds.Initialize().Wait();
+            // }
 
             _origin = _webauthnConfiguration.Origin;
 
@@ -248,8 +248,8 @@ namespace WebApi.Controllers
                 ServerDomain = _webauthnConfiguration.ServerDomain,
                 ServerName = _webauthnConfiguration.ServerName,
                 Origin = _origin,
-                // Only create and use Metadataservice if we have an acesskey
-                MetadataService = _mds
+                MDSAccessKey = _webauthnConfiguration.MDSAccessKey,
+                MDSCacheDirPath = _webauthnConfiguration.MDSCacheDirPath
             });
         }
 

@@ -1,5 +1,6 @@
-import { createReducer } from "@reduxjs/toolkit";
+import { createReducer, createSelector } from "@reduxjs/toolkit";
 import { AuthActions, AuthSignInActions } from "./actions";
+import { RootState } from "../../app/store";
 
 interface AuthState {
   firstName?: string;
@@ -22,6 +23,30 @@ const authReducer = createReducer(initialState, builder => {
     state.lastName = undefined;
     state.firstName = undefined;
   });
+  builder.addCase(AuthActions.meSuccess, (state: AuthState, { payload }) => {
+    state.currentUserId = payload.id;
+    state.lastName = payload.firstName;
+    state.firstName = payload.lastName;
+  });
+});
+
+const authState = createSelector(
+  (state: RootState) => state.auth,
+  auth => auth
+);
+
+export const getCurrentUserId = createSelector(authState, auth => auth.currentUserId);
+
+export const isAuthenticated = createSelector(getCurrentUserId, userId => {
+  return !!userId;
+});
+
+export const getFullName = createSelector(authState, auth => {
+  return `${auth.firstName} ${auth.lastName}`;
+});
+
+export const getFullNameAvatar = createSelector(authState, auth => {
+  return `${auth.firstName?.charAt(0)} ${auth.lastName?.charAt(0)}`;
 });
 
 export default authReducer;

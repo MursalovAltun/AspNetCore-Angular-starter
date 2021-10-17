@@ -1,9 +1,17 @@
 import { AppEpic } from "../../../app/store";
-import { filter, mapTo, switchMapTo, tap } from "rxjs/operators";
+import { filter, map, mapTo, switchMap, switchMapTo, tap } from "rxjs/operators";
 import { AuthActions } from "../actions";
 import { push } from "connected-react-router";
-import { fromEvent, merge, timer } from "rxjs";
+import { from, fromEvent, merge, timer } from "rxjs";
 import * as tokenManager from "../token-manager";
+import createApiClient from "../../../app/create-api-client";
+import { AccountClient } from "../../../app/api";
+
+export const meEpic: AppEpic = action$ =>
+  action$.pipe(
+    filter(AuthActions.meRequest.match),
+    switchMap(() => from(createApiClient(AccountClient).me()).pipe(map(response => AuthActions.meSuccess(response))))
+  );
 
 export const logout: AppEpic = action$ =>
   action$.pipe(

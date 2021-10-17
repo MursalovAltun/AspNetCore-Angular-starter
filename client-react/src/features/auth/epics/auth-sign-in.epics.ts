@@ -1,5 +1,5 @@
-import { filter, map, mapTo, switchMap, tap } from "rxjs/operators";
-import { AuthSignInActions } from "../actions";
+import { filter, map, mapTo, mergeMap, switchMap, tap } from "rxjs/operators";
+import { AuthActions, AuthSignInActions } from "../actions";
 import createApiClient from "../../../app/create-api-client";
 import { AuthClient } from "../../../app/api";
 import { from } from "rxjs";
@@ -16,7 +16,7 @@ export const signInEpic: AppEpic = action$ =>
       from(createApiClient(AuthClient).authenticate(payload)).pipe(
         tap(({ token }) => tokenManager.setAuthToken(token!)),
         map(({ token }) => jwtDecode<TokenPayload>(token!)),
-        map(({ nameid }) => AuthSignInActions.signInSuccess({ currentUserId: nameid }))
+        mergeMap(({ nameid }) => [AuthSignInActions.signInSuccess({ currentUserId: nameid }), AuthActions.meRequest()])
       )
     )
   );

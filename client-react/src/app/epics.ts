@@ -8,6 +8,7 @@ const epics = combineEpics(
   AuthEpics.idleTimoutEpic,
   AuthEpics.logout,
   AuthEpics.idleLogout,
+  AuthEpics.meEpic,
   AuthSignInEpics.signInEpic,
   AuthSignInEpics.signInSuccessEpic,
   AuthRegistrationEpics.register,

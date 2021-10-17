@@ -6,6 +6,7 @@
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@hookform/resolvers": "^2.6.0",
+    "@mui/icons-material": "^5.0.4",
     "@mui/material": "^5.0.3",
     "@reduxjs/toolkit": "^1.6.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -35,7 +36,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cpx build/**/*.* ../server/Src/WebApi/wwwroot\n",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "generate-api": "node_modules/.bin/nswag run client.config.nswag"
@@ -58,6 +59,7 @@
   "devDependencies": {
     "@types/react-router": "^5.1.15",
     "@types/yup": "^0.29.12",
+    "cpx": "^1.5.0",
     "nswag": "^13.11.3",
     "prettier": "2.3.2"
   }

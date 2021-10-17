@@ -1067,6 +1067,7 @@ export interface AccountCreateRequest {
 }
 
 export interface UserDto {
+    id: string;
     firstName?: string | undefined;
     lastName?: string | undefined;
     languageCode?: string | undefined;
@@ -1115,25 +1116,38 @@ export interface Fido2ResponseBase {
     errorMessage?: string | undefined;
 }
 
+/** Sent to the browser when we want to Assert credentials and authenticate a user */
 export interface AssertionOptions extends Fido2ResponseBase {
+    /** This member represents a challenge that the selected authenticator signs, along with other data, when producing an authentication assertion.See the §13.1 Cryptographic Challenges security consideration. */
     challenge?: string | undefined;
+    /** This member specifies a time, in milliseconds, that the caller is willing to wait for the call to complete. This is treated as a hint, and MAY be overridden by the client. */
     timeout: number;
+    /** This OPTIONAL member specifies the relying party identifier claimed by the caller.If omitted, its value will be the CredentialsContainer object’s relevant settings object's origin's effective domain */
     rpId?: string | undefined;
+    /** This OPTIONAL member contains a list of PublicKeyCredentialDescriptor objects representing public key credentials acceptable to the caller, in descending order of the caller’s preference(the first item in the list is the most preferred credential, and so on down the list) */
     allowCredentials?: PublicKeyCredentialDescriptor[] | undefined;
+    /** This member describes the Relying Party's requirements regarding user verification for the get() operation. Eligible authenticators are filtered to only those capable of satisfying this requirement */
     userVerification?: UserVerificationRequirement | undefined;
+    /** This OPTIONAL member contains additional parameters requesting additional processing by the client and authenticator. For example, if transaction confirmation is sought from the user, then the prompt string might be included as an extension. */
     extensions?: AuthenticationExtensionsClientInputs | undefined;
 }
 
+/** This object contains the attributes that are specified by a caller when referring to a public key credential as an input parameter to the create() or get() methods. It mirrors the fields of the PublicKeyCredential object returned by the latter methods. Lazy implementation of https://www.w3.org/TR/webauthn/#dictdef-publickeycredentialdescriptor todo: Should add validation of values as specified in spec */
 export interface PublicKeyCredentialDescriptor {
+    /** This member contains the type of the public key credential the caller is referring to. */
     type?: PublicKeyCredentialType | undefined;
+    /** This member contains the credential ID of the public key credential the caller is referring to. */
     id?: string | undefined;
+    /** This OPTIONAL member contains a hint as to how the client might communicate with the managing authenticator of the public key credential the caller is referring to. */
     transports?: AuthenticatorTransport[] | undefined;
 }
 
+/** PublicKeyCredentialType. https://w3c.github.io/webauthn/#enumdef-publickeycredentialtype */
 export enum PublicKeyCredentialType {
     PublicKey = "public-key",
 }
 
+/** Authenticators may implement various transports for communicating with clients. This enumeration defines hints as to how clients might communicate with a particular authenticator in order to obtain an assertion for a specific credential. Note that these hints represent the WebAuthn Relying Party's best belief as to how an authenticator may be reached. A Relying Party may obtain a list of transports hints from some attestation statement formats or via some out-of-band mechanism; it is outside the scope of this specification to define that mechanism. https://w3c.github.io/webauthn/#transport */
 export enum AuthenticatorTransport {
     Usb = "usb",
     Nfc = "nfc",
@@ -1142,6 +1156,7 @@ export enum AuthenticatorTransport {
     Lightning = "lightning",
 }
 
+/** A WebAuthn Relying Party may require user verification for some of its operations but not for others, and may use this type to express its needs. https://w3c.github.io/webauthn/#enumdef-userverificationrequirement */
 export enum UserVerificationRequirement {
     Required = "required",
     Preferred = "preferred",
@@ -1149,15 +1164,34 @@ export enum UserVerificationRequirement {
 }
 
 export interface AuthenticationExtensionsClientInputs {
+    /** This extension allows for passing of conformance tests */
     "example.extension"?: any | undefined;
+    /** This extension allows WebAuthn Relying Parties that have previously registered a credential using the legacy FIDO JavaScript APIs to request an assertion.
+https://www.w3.org/TR/webauthn/#sctn-appid-extension */
     appid?: string | undefined;
+    /** This extension allows for a simple form of transaction authorization. A Relying Party can specify a prompt string, intended for display on a trusted device on the authenticator.
+https://www.w3.org/TR/webauthn/#sctn-simple-txauth-extension */
     txAuthSimple?: string | undefined;
+    /** This extension allows images to be used as transaction authorization prompts as well. This allows authenticators without a font rendering engine to be used and also supports a richer visual appearance.
+https://www.w3.org/TR/webauthn/#sctn-generic-txauth-extension */
     txAuthGenericArg?: TxAuthGenericArg | undefined;
+    /** This extension allows a WebAuthn Relying Party to guide the selection of the authenticator that will be leveraged when creating the credential. It is intended primarily for Relying Parties that wish to tightly control the experience around credential creation.
+https://www.w3.org/TR/webauthn/#sctn-authenticator-selection-extension */
     authnSel?: string[] | undefined;
+    /** This extension enables the WebAuthn Relying Party to determine which extensions the authenticator supports.
+https://www.w3.org/TR/webauthn/#sctn-supported-extensions-extension */
     exts?: boolean | undefined;
+    /** This extension enables use of a user verification index.
+https://www.w3.org/TR/webauthn/#sctn-uvi-extension */
     uvi?: boolean | undefined;
+    /** This extension provides the authenticator's current location to the WebAuthn WebAuthn Relying Party.
+https://www.w3.org/TR/webauthn/#sctn-location-extension */
     loc?: boolean | undefined;
+    /** This extension enables use of a user verification method.
+https://www.w3.org/TR/webauthn/#sctn-uvm-extension */
     uvm?: boolean | undefined;
+    /** This extension allows WebAuthn Relying Parties to specify the desired performance bounds for selecting biometric authenticators as candidates to be employed in a registration ceremony.
+https://www.w3.org/TR/webauthn/#sctn-authenticator-biometric-criteria-extension */
     biometricPerfBounds?: AuthenticatorBiometricPerfBounds | undefined;
 }
 
@@ -1176,6 +1210,7 @@ export interface ValidateLoginDto {
     assertionRawResponse?: AuthenticatorAssertionRawResponse | undefined;
 }
 
+/** Transport class for AssertionResponse */
 export interface AuthenticatorAssertionRawResponse {
     id?: string | undefined;
     rawId?: string | undefined;
@@ -1192,69 +1227,147 @@ export interface AssertionResponse {
 }
 
 export interface AuthenticationExtensionsClientOutputs {
+    /** This extension allows for passing of conformance tests */
     "example.extension"?: any | undefined;
+    /** This extension allows WebAuthn Relying Parties that have previously registered a credential using the legacy FIDO JavaScript APIs to request an assertion.
+https://www.w3.org/TR/webauthn/#sctn-appid-extension */
     appid: boolean;
+    /** This extension allows for a simple form of transaction authorization. A Relying Party can specify a prompt string, intended for display on a trusted device on the authenticator.
+https://www.w3.org/TR/webauthn/#sctn-simple-txauth-extension */
     txAuthSimple?: string | undefined;
+    /** This extension allows images to be used as transaction authorization prompts as well. This allows authenticators without a font rendering engine to be used and also supports a richer visual appearance.
+https://www.w3.org/TR/webauthn/#sctn-generic-txauth-extension */
     txAuthGenericArg?: string | undefined;
+    /** This extension allows a WebAuthn Relying Party to guide the selection of the authenticator that will be leveraged when creating the credential. It is intended primarily for Relying Parties that wish to tightly control the experience around credential creation.
+https://www.w3.org/TR/webauthn/#sctn-authenticator-selection-extension */
     authnSel: boolean;
+    /** This extension enables the WebAuthn Relying Party to determine which extensions the authenticator supports.
+https://www.w3.org/TR/webauthn/#sctn-supported-extensions-extension */
     exts?: string[] | undefined;
+    /** This extension enables use of a user verification index.
+https://www.w3.org/TR/webauthn/#sctn-uvi-extension */
     uvi?: string | undefined;
+    /** This extension provides the authenticator's current location to the WebAuthn WebAuthn Relying Party.
+https://www.w3.org/TR/webauthn/#sctn-location-extension */
     loc?: GeoCoordinate | undefined;
+    /** This extension enables use of a user verification method.
+https://www.w3.org/TR/webauthn/#sctn-uvm-extension */
     uvm?: number[][] | undefined;
+    /** This extension allows WebAuthn Relying Parties to specify the desired performance bounds for selecting biometric authenticators as candidates to be employed in a registration ceremony.
+https://www.w3.org/TR/webauthn/#sctn-authenticator-biometric-criteria-extension */
     biometricPerfBounds: boolean;
 }
 
+/** Represents a geographical location that is determined by latitude and longitude coordinates. May also include altitude, accuracy, speed, and course information. */
 export interface GeoCoordinate {
+    /** Gets or sets the latitude of the GeoCoordinate.
+             */
     latitude: number;
+    /** Gets or sets the longitude of the GeoCoordinate.
+             */
     longitude: number;
+    /** Gets or sets the accuracy of the latitude and longitude that is given by the GeoCoordinate, in meters.
+             */
     horizontalAccuracy: number;
+    /** Gets or sets the accuracy of the altitude given by the GeoCoordinate, in meters.
+             */
     verticalAccuracy: number;
+    /** Gets or sets the speed in meters per second.
+             */
     speed: number;
+    /** Gets or sets the heading in degrees, relative to true north.
+             */
     course: number;
+    /** Gets a value that indicates whether the GeoCoordinate does not contain latitude or longitude data.
+             */
     isUnknown: boolean;
+    /** Gets the altitude of the GeoCoordinate, in meters.
+             */
     altitude: number;
 }
 
 export interface CredentialCreateOptions extends Fido2ResponseBase {
-    rp?: Rp | undefined;
+    /** This member contains data about the Relying Party responsible for the request.
+Its value’s name member is required.
+Its value’s id member specifies the relying party identifier with which the credential should be associated.If omitted, its value will be the CredentialsContainer object’s relevant settings object's origin's effective domain. */
+    rp?: PublicKeyCredentialRpEntity | undefined;
+    /** This member contains data about the user account for which the Relying Party is requesting attestation. 
+Its value’s name, displayName and id members are required. */
     user?: Fido2User | undefined;
+    /** Must be generated by the Server (Relying Party) */
     challenge?: string | undefined;
+    /** This member contains information about the desired properties of the credential to be created. The sequence is ordered from most preferred to least preferred. The platform makes a best-effort to create the most preferred credential that it can. */
     pubKeyCredParams?: PubKeyCredParam[] | undefined;
+    /** This member specifies a time, in milliseconds, that the caller is willing to wait for the call to complete. This is treated as a hint, and MAY be overridden by the platform. */
     timeout: number;
+    /** This member is intended for use by Relying Parties that wish to express their preference for attestation conveyance.The default is none. */
     attestation: AttestationConveyancePreference;
+    /** This member is intended for use by Relying Parties that wish to select the appropriate authenticators to participate in the create() operation. */
     authenticatorSelection?: AuthenticatorSelection | undefined;
+    /** This member is intended for use by Relying Parties that wish to limit the creation of multiple credentials for the same account on a single authenticator.The client is requested to return an error if the new credential would be created on an authenticator that also contains one of the credentials enumerated in this parameter. */
     excludeCredentials?: PublicKeyCredentialDescriptor[] | undefined;
+    /** This OPTIONAL member contains additional parameters requesting additional processing by the client and authenticator. For example, if transaction confirmation is sought from the user, then the prompt string might be included as an extension. */
     extensions?: AuthenticationExtensionsClientInputs | undefined;
 }
 
-export interface Rp {
+/** PublicKeyCredentialRpEntity */
+export interface PublicKeyCredentialRpEntity {
+    /** A unique identifier for the Relying Party entity, which sets the RP ID. */
     id?: string | undefined;
+    /** A human-readable name for the entity. Its function depends on what the PublicKeyCredentialEntity represents: */
     name?: string | undefined;
+    icon?: string | undefined;
 }
 
 export interface Fido2User {
+    /** Required. A human-friendly identifier for a user account. It is intended only for display, i.e., aiding the user in determining the difference between user accounts with similar displayNames. For example, "alexm", "alex.p.mueller@example.com" or "+14255551234". https://w3c.github.io/webauthn/#dictdef-publickeycredentialentity */
     name?: string | undefined;
+    /** The user handle of the user account entity. To ensure secure operation, authentication and authorization decisions MUST be made on the basis of this id member, not the displayName nor name members */
     id?: string | undefined;
+    /** A human-friendly name for the user account, intended only for display. For example, "Alex P. Müller" or "田中 倫". The Relying Party SHOULD let the user choose this, and SHOULD NOT restrict the choice more than necessary. */
     displayName?: string | undefined;
 }
 
 export interface PubKeyCredParam {
+    /** The type member specifies the type of credential to be created. */
     type: PublicKeyCredentialType;
-    alg: number;
+    /** The alg member specifies the cryptographic signature algorithm with which the newly generated credential will be used, and thus also the type of asymmetric key pair to be generated, e.g., RSA or Elliptic Curve. */
+    alg: Algorithm;
 }
 
+/** COSE Algorithms https://www.iana.org/assignments/cose/cose.xhtml#algorithms */
+export enum Algorithm {
+    RS1 = -65535,
+    RS512 = -259,
+    RS384 = -258,
+    RS256 = -257,
+    PS512 = -39,
+    PS384 = -38,
+    PS256 = -37,
+    ES512 = -36,
+    ES384 = -35,
+    EdDSA = -8,
+    ES256 = -7,
+}
+
+/** AttestationConveyancePreference. https://w3c.github.io/webauthn/#attestation-convey */
 export enum AttestationConveyancePreference {
     None = "none",
     Indirect = "indirect",
     Direct = "direct",
 }
 
+/** WebAuthn Relying Parties may use the AuthenticatorSelectionCriteria dictionary to specify their requirements regarding authenticator attributes. */
 export interface AuthenticatorSelection {
+    /** If this member is present, eligible authenticators are filtered to only authenticators attached with the specified §5.4.5 Authenticator Attachment enumeration (enum AuthenticatorAttachment). */
     authenticatorAttachment?: AuthenticatorAttachment | undefined;
+    /** This member describes the Relying Parties' requirements regarding resident credentials. If the parameter is set to true, the authenticator MUST create a client-side-resident public key credential source when creating a public key credential. */
     requireResidentKey: boolean;
+    /** This member describes the Relying Party's requirements regarding user verification for the create() operation. Eligible authenticators are filtered to only those capable of satisfying this requirement. */
     userVerification: UserVerificationRequirement;
 }
 
+/** This enumeration’s values describe authenticators' attachment modalities. Relying Parties use this for two purposes: to express a preferred authenticator attachment modality when calling navigator.credentials.create() to create a credential, and to inform the client of the Relying Party's best belief about how to locate the managing authenticators of the credentials listed in allowCredentials when calling navigator.credentials.get(). */
 export enum AuthenticatorAttachment {
     Platform = "platform",
     CrossPlatform = "cross-platform",

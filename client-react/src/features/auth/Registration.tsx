@@ -6,6 +6,11 @@ import { push } from "connected-react-router";
 import { AuthRegistrationActions } from "./actions";
 import createApiClient from "../../app/create-api-client";
 import { AccountClient } from "../../app/api";
+import { Button, IconButton, InputAdornment, Paper, Typography } from "@mui/material";
+import { FormInputText } from "../../components/controls/FormInputText";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
+import { useState } from "react";
 
 interface RegistrationFormProfile {
   email: string;
@@ -37,13 +42,10 @@ const schema: yup.SchemaOf<RegistrationFormProfile> = yup.object().shape({
 const Registration = () => {
   const dispatch = useAppDispatch();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegistrationFormProfile>({
+  const { handleSubmit, control } = useForm<RegistrationFormProfile>({
     resolver: yupResolver(schema),
   });
+
   const onSubmit = (data: RegistrationFormProfile) => {
     dispatch(
       AuthRegistrationActions.register({
@@ -54,32 +56,73 @@ const Registration = () => {
   };
 
   const navigateToLogin = () => {
+    console.log("awdawd");
     dispatch(push("login"));
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const showPasswordHandler = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="text" {...register("firstName")} />
-      <p>{errors.firstName?.message}</p>
+    <Paper
+      style={{
+        display: "grid",
+        gridRowGap: "20px",
+        padding: "20px",
+        margin: "10px 300px",
+      }}
+    >
+      <Typography variant="h6">Registration</Typography>
 
-      <input type="text" {...register("lastName")} />
-      <p>{errors.lastName?.message}</p>
+      <FormInputText name="firstName" control={control} label="First Name" />
 
-      <input type="email" {...register("email")} />
-      <p>{errors.email?.message}</p>
+      <FormInputText name="lastName" control={control} label="Last Name" />
 
-      <input type="password" {...register("password")} />
-      <p>{errors.password?.message}</p>
+      <FormInputText name="email" control={control} label="Email" />
 
-      <input type="password" {...register("confirmPassword")} />
-      <p>{errors.confirmPassword?.message}</p>
+      <FormInputText
+        name="password"
+        type={showPassword ? "text" : "password"}
+        control={control}
+        label="Password"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton aria-label="toggle password visibility" onClick={showPasswordHandler} edge="end">
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
 
-      <input type="submit" />
+      <FormInputText
+        name="confirmPassword"
+        type={showPassword ? "text" : "password"}
+        control={control}
+        label="Confirm Password"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton aria-label="toggle password visibility" onClick={showPasswordHandler} edge="end">
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
 
-      <button type="button" onClick={navigateToLogin}>
+      <Button onClick={handleSubmit(onSubmit)} variant={"contained"}>
+        Submit
+      </Button>
+
+      <Button onClick={navigateToLogin} variant={"outlined"}>
         Already have an account?
-      </button>
-    </form>
+      </Button>
+    </Paper>
   );
 };
 

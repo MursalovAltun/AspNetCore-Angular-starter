@@ -8,15 +8,18 @@ import { Redirect, Route, Switch } from "react-router";
 import TodosList from "./features/todos/TodosList";
 import * as tokenManager from "./features/auth/token-manager";
 import Registration from "./features/auth/Registration";
-import { useAppDispatch } from "./app/hooks";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { AuthActions } from "./features/auth/actions";
-import { BottomNavigation, BottomNavigationAction } from "@mui/material";
+import { Avatar, BottomNavigation, BottomNavigationAction, Button, Paper } from "@mui/material";
+import * as fromAuth from "./features/auth/auth.reducer";
 
 function App() {
   const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector(fromAuth.isAuthenticated);
+  const fullNameAvatar = useAppSelector(fromAuth.getFullNameAvatar);
 
   useEffect(() => {
-    // dispatch(fromAuth.me());
+    dispatch(AuthActions.meRequest());
   }, [dispatch]);
 
   const logout = () => {
@@ -25,11 +28,19 @@ function App() {
 
   return (
     <ConnectedRouter history={history}>
-      <div>
-        <button type="button" onClick={logout}>
-          Logout
-        </button>
-      </div>
+      {isAuthenticated && (
+        <Paper
+          sx={{
+            display: "flex",
+            padding: "4px",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Avatar>{fullNameAvatar}</Avatar>
+          <Button onClick={logout}>Logout</Button>
+        </Paper>
+      )}
 
       <CustomSnackbar />
 
@@ -47,9 +58,13 @@ function App() {
         />
       </Switch>
 
-      <BottomNavigation value={"todos"}>
-        <BottomNavigationAction label="Todos" value="todos" />
-      </BottomNavigation>
+      {isAuthenticated && (
+        <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }} elevation={3}>
+          <BottomNavigation showLabels value={"todos"}>
+            <BottomNavigationAction label="Todos" value="todos" />
+          </BottomNavigation>
+        </Paper>
+      )}
     </ConnectedRouter>
   );
 }

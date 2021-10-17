@@ -44,7 +44,7 @@ namespace WebApi
 
             app.UseConfiguredCors(env);
 
-            app.UsePreconfiguredCsp();
+            // app.UsePreconfiguredCsp();
 
             app.UseConfiguredStaticFiles();
 
