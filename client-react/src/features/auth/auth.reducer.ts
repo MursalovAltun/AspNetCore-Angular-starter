@@ -46,7 +46,7 @@ export const getFullName = createSelector(authState, auth => {
 });
 
 export const getFullNameAvatar = createSelector(authState, auth => {
-  return `${auth.firstName?.charAt(0)} ${auth.lastName?.charAt(0)}`;
+  return `${auth.firstName?.charAt(0).toUpperCase()} ${auth.lastName?.charAt(0).toUpperCase()}`;
 });
 
 export default authReducer;

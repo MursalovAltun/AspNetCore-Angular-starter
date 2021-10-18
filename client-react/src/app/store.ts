@@ -2,11 +2,12 @@ import { AnyAction, combineReducers, configureStore, getDefaultMiddleware } from
 import { createEpicMiddleware, Epic } from "redux-observable";
 import { createBrowserHistory } from "history";
 import storeLogger from "./store-logger";
-import snackbarReducer from "../components/snackbarSlice";
+import snackbarReducer from "../components/snackbar/snackbarSlice";
 import authReducer from "../features/auth/auth.reducer";
 import { connectRouter, routerMiddleware } from "connected-react-router";
 import todosReducer from "../features/todos/todos.reducer";
 import rootEpic from "./epics";
+import loaderReducer from "../components/loader/loaderSlice";
 
 export const history = createBrowserHistory();
 
@@ -15,6 +16,7 @@ const reducer = combineReducers({
   auth: authReducer,
   snackbar: snackbarReducer,
   todos: todosReducer,
+  loader: loaderReducer,
 });
 
 export type AppState = ReturnType<typeof reducer>;

@@ -113,6 +113,10 @@ const Login = () => {
         Submit
       </Button>
 
+      <Button onClick={handleSubmit(loginFingerprint)} variant={"outlined"}>
+        Using Fingerprint
+      </Button>
+
       <Button onClick={navigateToRegistration} variant={"outlined"}>
         Don't have an account?
       </Button>

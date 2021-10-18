@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as fromSnackbar from "./snackbarSlice";
 import { Alert, Snackbar } from "@mui/material";
 

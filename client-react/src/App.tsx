@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import CustomSnackbar from "./components/snackbar";
+import CustomSnackbar from "./components/snackbar/snackbar";
 import Login from "./features/auth/Login";
 import { history } from "./app/store";
 import { ConnectedRouter } from "connected-react-router";
@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { AuthActions } from "./features/auth/actions";
 import { Avatar, BottomNavigation, BottomNavigationAction, Button, Paper } from "@mui/material";
 import * as fromAuth from "./features/auth/auth.reducer";
+import Loader from "./components/loader/loader";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -19,7 +20,9 @@ function App() {
   const fullNameAvatar = useAppSelector(fromAuth.getFullNameAvatar);
 
   useEffect(() => {
-    dispatch(AuthActions.meRequest());
+    if (!!tokenManager.getAuthToken()) {
+      // dispatch(AuthActions.meRequest());
+    }
   }, [dispatch]);
 
   const logout = () => {
@@ -28,6 +31,8 @@ function App() {
 
   return (
     <ConnectedRouter history={history}>
+      <Loader />
+
       {isAuthenticated && (
         <Paper
           sx={{

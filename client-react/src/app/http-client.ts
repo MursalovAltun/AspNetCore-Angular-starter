@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { AppDispatch } from "./store";
-import { showSnackbar } from "../components/snackbarSlice";
+import { showSnackbar } from "../components/snackbar/snackbarSlice";
 import copy from "fast-copy";
 import * as tokenManager from "../features/auth/token-manager";
 import { AuthActions } from "../features/auth/actions";
+import * as fromLoader from "../components/loader/loaderSlice";
 
 export const setAuthHeaderForRequest = (request: AxiosRequestConfig): AxiosRequestConfig => {
   const authToken = tokenManager.getAuthToken();
@@ -39,14 +40,28 @@ const httpClient = axios.create({
 });
 
 export const setupInterceptors = (dispatch: AppDispatch) => {
-  httpClient.interceptors.request.use(request => setAuthHeaderForRequest(request));
+  httpClient.interceptors.request.use(
+    request => {
+      dispatch(fromLoader.toggleLoader());
+
+      return setAuthHeaderForRequest(request);
+    },
+    () => {
+      dispatch(fromLoader.toggleLoader());
+    }
+  );
 
   httpClient.interceptors.response.use(
     response => {
+      dispatch(fromLoader.toggleLoader());
+
       return response;
     },
     (error: AxiosError) => {
       onResponseRejectedHandler(error, dispatch);
+
+      dispatch(fromLoader.toggleLoader());
+
       return Promise.reject(error);
     }
   );
