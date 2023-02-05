@@ -5,6 +5,7 @@ using Application.UnitTests.Fixtures;
 using Autofac.Extras.Moq;
 using EF.Models;
 using EF.Models.Models;
+using FluentAssertions;
 using UnitTests.Common.Extensions;
 using Xunit;
 
@@ -42,10 +43,8 @@ namespace Application.UnitTests.Components.TodoItems
             mock.SetCurrentUser(userId);
 
             var sut = mock.Create<TodoItemExistProvider>();
-            
-            var actual = await sut.ExistAsync(description);
 
-            Assert.True(actual);
+            (await sut.ExistAsync(description)).Should().BeTrue();
         }
 
         [Fact]
@@ -59,10 +58,8 @@ namespace Application.UnitTests.Components.TodoItems
             mock.SetCurrentUser(userId);
 
             var sut = mock.Create<TodoItemExistProvider>();
-            
-            var actual = await sut.ExistAsync(description);
 
-            Assert.False(actual);
+            (await sut.ExistAsync(description)).Should().BeFalse();
         }
     }
 }

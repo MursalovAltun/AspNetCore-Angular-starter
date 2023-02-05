@@ -4,6 +4,7 @@ using Application.Auth.Account;
 using Application.Auth.Identity;
 using Autofac.Extras.Moq;
 using EF.Models.Models;
+using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using UnitTests.Common.Asserts;
@@ -30,14 +31,10 @@ namespace Application.UnitTests.Auth.Account
                 .Setup(manager => manager.CreateAsync(It.IsAny<User>(), "password"))
                 .ReturnsAsync(IdentityResult.Success);
 
-            var sut = mock.Create<AccountService>();
-
-            var result = await sut.Create(request);
+            (await mock.Create<AccountService>().Create(request)).Email.Should().Be("email");
 
             mock.Mock<IUserManager>()
                 .Verify(manager => manager.CreateAsync(It.Is<User>(user => user.Email == "email"), "password"));
-
-            Assert.Equal("email", result.Email);
         }
 
         [Fact]

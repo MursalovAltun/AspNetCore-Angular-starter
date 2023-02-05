@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Application.Components.TodoItems;
 using Application.Validators.UserItem;
 using Autofac.Extras.Moq;
@@ -22,7 +23,7 @@ namespace Application.UnitTests.Validators.TodoItems
         }
 
         [Fact]
-        public void Returns_Invalid_When_User_Has_No_Access()
+        public async Task Returns_Invalid_When_User_Has_No_Access()
         {
             var request = new TodoItemDeleteRequest
             {
@@ -31,12 +32,12 @@ namespace Application.UnitTests.Validators.TodoItems
 
             SetValidationServices(request, FailedValidationService.HasAccess);
 
-            _validator
-                .ShouldHaveValidationErrorFor(r => r.Id, request);
+            (await _validator.TestValidateAsync(request))
+                .ShouldHaveValidationErrorFor(r => r.Id);
         }
 
         [Fact]
-        public void Returns_Invalid_When_Item_No_Exists()
+        public async Task Returns_Invalid_When_Item_No_Exists()
         {
             var request = new TodoItemDeleteRequest
             {
@@ -45,8 +46,8 @@ namespace Application.UnitTests.Validators.TodoItems
 
             SetValidationServices(request, FailedValidationService.IsExists);
 
-            _validator
-                .ShouldHaveValidationErrorFor(r => r.Id, request);
+            (await _validator.TestValidateAsync(request))
+                .ShouldHaveValidationErrorFor(r => r.Id);
         }
 
         private enum FailedValidationService

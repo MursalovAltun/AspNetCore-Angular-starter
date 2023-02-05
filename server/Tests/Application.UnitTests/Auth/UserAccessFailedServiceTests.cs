@@ -7,6 +7,7 @@ using Autofac.Extras.Moq;
 using Common.Time;
 using EF.Models;
 using EF.Models.Models;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Xunit;
@@ -57,11 +58,7 @@ namespace Application.UnitTests.Auth
 
             await _context.SaveChangesAsync();
 
-            var sut = mock.Create<UserAccessFailedService>();
-
-            var actual = await sut.IsCaptchaRequired(user);
-
-            Assert.Null(actual);
+            (await mock.Create<UserAccessFailedService>().IsCaptchaRequired(user)).Should().BeNull();
         }
 
         [Fact]
@@ -99,9 +96,7 @@ namespace Application.UnitTests.Auth
 
             var sut = mock.Create<UserAccessFailedService>();
 
-            var actual = await sut.IsCaptchaRequired(user);
-
-            Assert.Equal(actual, now.AddMinutes(15));
+            (await sut.IsCaptchaRequired(user)).Should().Be(now.AddMinutes(15));
         }
 
         [Fact]
@@ -133,10 +128,9 @@ namespace Application.UnitTests.Auth
 
             await sut.RegisterFailedAttempt(user);
 
-            var added = await _context.UserAccessFailedAttempts.SingleAsync(uafa => uafa.UserId == user.Id);
-
-            Assert.Equal(added.Date, now);
-            Assert.Equal(added.User, user);
+            var added = (await _context.UserAccessFailedAttempts.SingleAsync(uafa => uafa.UserId == user.Id))
+                .Should()
+                .Match<UserAccessFailedAttempt>(x => x.Date == now && x.User == user);
         }
     }
 }

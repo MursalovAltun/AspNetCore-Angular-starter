@@ -21,7 +21,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddConfiguredStaticFiles();
-            
+
             services.ConfigureControllers();
 
             services.AddApplication(Configuration);

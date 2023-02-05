@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Application.Components.TodoItems;
 using Application.Validators.TodoItems;
 using Application.Validators.UserItem;
@@ -23,18 +24,18 @@ namespace Application.UnitTests.Validators.TodoItems
         }
 
         [Fact]
-        public void Returns_Invalid_When_User_Has_No_Access()
+        public async Task Returns_Invalid_When_User_Has_No_Access()
         {
             var request = new TodoItemUpdateDoneRequest
             {
                 Done = true,
                 TodoItemId = Guid.NewGuid()
             };
-            
+
             SetValidationServices(request, FailedValidationService.HasAccess);
 
-            _validator
-                .ShouldHaveValidationErrorFor(r => r.TodoItemId, request);
+            (await _validator.TestValidateAsync(request))
+                .ShouldHaveValidationErrorFor(r => r.TodoItemId);
         }
 
         private enum FailedValidationService

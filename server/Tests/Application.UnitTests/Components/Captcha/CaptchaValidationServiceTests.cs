@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Components.Captcha;
 using Autofac;
 using Autofac.Extras.Moq;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -33,7 +34,7 @@ namespace Application.UnitTests.Components.Captcha
                     new KeyValuePair<string, string>("response", validationToken),
                     new KeyValuePair<string, string>("remoteip", ip)
                 })
-                .Respond("application/json", JsonConvert.SerializeObject(new {success = true}));
+                .Respond("application/json", JsonConvert.SerializeObject(new { success = true }));
 
             var client = mockHttp.ToHttpClient();
 
@@ -76,7 +77,7 @@ namespace Application.UnitTests.Components.Captcha
                     new KeyValuePair<string, string>("response", validationToken),
                     new KeyValuePair<string, string>("remoteip", ip)
                 })
-                .Respond("application/json", JsonConvert.SerializeObject(new {success = false}));
+                .Respond("application/json", JsonConvert.SerializeObject(new { success = false }));
 
             var client = mockHttp.ToHttpClient();
 
@@ -86,6 +87,7 @@ namespace Application.UnitTests.Components.Captcha
                 .SetupGet(configuration => configuration.Value)
                 .Returns(new CaptchaOptions
                 {
+                    Enabled = true,
                     VerificationUrl = verificationUrl,
                     Secret = secret,
                 });
@@ -94,11 +96,7 @@ namespace Application.UnitTests.Components.Captcha
                 .Setup(accessor => accessor.HttpContext.Connection.RemoteIpAddress)
                 .Returns(ipAddress);
 
-            var sut = mock.Create<CaptchaValidationService>();
-
-            var actual = await sut.IsValidAsync(validationToken);
-
-            Assert.False(actual);
+            (await mock.Create<CaptchaValidationService>().IsValidAsync(validationToken)).Should().BeFalse();
         }
     }
 }

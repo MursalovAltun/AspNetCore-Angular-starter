@@ -1,10 +1,8 @@
-using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NSwag;
-using NSwag.Generation.Processors.Security;
+using Microsoft.OpenApi.Models;
 
 namespace WebApi.Configurations
 {
@@ -12,18 +10,15 @@ namespace WebApi.Configurations
     {
         public static IServiceCollection ConfigureSwagger(this IServiceCollection services)
         {
-            services.AddSwaggerDocument(document =>
+            services.AddSwaggerGen(document =>
             {
-                document.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                document.AddSecurityDefinition("JWT", new OpenApiSecurityScheme
                 {
-                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Type = SecuritySchemeType.ApiKey,
                     Name = "Authorization",
-                    In = OpenApiSecurityApiKeyLocation.Header,
+                    In = ParameterLocation.Header,
                     Description = "Type into the textbox: Bearer {your JWT token}."
                 });
- 
-                document.OperationProcessors.Add(
-                    new AspNetCoreOperationSecurityScopeProcessor("JWT"));
             });
 
             return services;
@@ -33,8 +28,8 @@ namespace WebApi.Configurations
         {
             if (!env.IsDevelopment()) return app;
 
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             return app;
         }

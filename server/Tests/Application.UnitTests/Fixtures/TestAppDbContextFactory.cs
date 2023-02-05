@@ -8,7 +8,7 @@ namespace Application.UnitTests.Fixtures
         public static TestAppDbContext Create()
         {
             var options = new DbContextOptionsBuilder<TestAppDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .UseInMemoryDatabase(Guid.NewGuid().ToString(), options => options.EnableNullChecks(false))
                 .UseLazyLoadingProxies()
                 .Options;
 

@@ -14,9 +14,9 @@ using EF.Models.Models;
 using Fido2NetLib;
 using Fido2NetLib.Objects;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using NSwag.Annotations;
 using AuthenticatorTransport = Fido2NetLib.Objects.AuthenticatorTransport;
 using PublicKeyCredentialDescriptor = Fido2NetLib.Objects.PublicKeyCredentialDescriptor;
 
@@ -79,7 +79,7 @@ namespace WebApi.Controllers
                 AppID = _origin,
                 SimpleTransactionAuthorization = "FIDO",
                 GenericTransactionAuthorization = new TxAuthGenericArg
-                    {ContentType = "text/plain", Content = new byte[] {0x46, 0x49, 0x44, 0x4F}},
+                { ContentType = "text/plain", Content = new byte[] { 0x46, 0x49, 0x44, 0x4F } },
                 UserVerificationIndex = true,
                 Location = true,
                 UserVerificationMethod = true
@@ -141,13 +141,13 @@ namespace WebApi.Controllers
         #region Register
 
         [HttpPost]
-        [SwaggerResponse(typeof(CredentialCreateOptions))]
+        [ProducesResponseType(typeof(CredentialCreateOptions), StatusCodes.Status200OK)]
         public async Task<ContentResult> GetRegisterOptions()
         {
             var user = await GetCurrentUser();
 
             var fidoUser = new Fido2User
-                {DisplayName = user.Email, Id = user.Id.ToByteArray(), Name = user.UserName};
+            { DisplayName = user.Email, Id = user.Id.ToByteArray(), Name = user.UserName };
 
             var options = _lib.RequestNewCredential(fidoUser, GetWebauthnCredentialDescriptors(user),
                 AuthenticatorSelection.Default,

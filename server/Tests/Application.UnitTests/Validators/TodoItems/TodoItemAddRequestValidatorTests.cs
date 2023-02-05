@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Application.Components.TodoItems;
 using Application.Validators.TodoItems;
 using Autofac.Extras.Moq;
@@ -23,7 +24,7 @@ namespace Application.UnitTests.Validators.TodoItems
         [InlineData("")]
         [InlineData("           ")]
         [InlineData(null)]
-        public void Returns_Invalid_When_Description_Is_Empty(string description)
+        public async Task Returns_Invalid_When_Description_Is_Empty(string description)
         {
             var request = new TodoItemAddRequest
             {
@@ -32,12 +33,12 @@ namespace Application.UnitTests.Validators.TodoItems
 
             SetValidationServices(request, FailedValidationService.None);
 
-            _validator
-                .ShouldHaveValidationErrorFor(r => r.Description, request);
+            (await _validator.TestValidateAsync(request))
+                .ShouldHaveValidationErrorFor(r => r.Description);
         }
 
         [Fact]
-        public void Returns_Invalid_When_Description_Is_Already_Exists()
+        public async Task Returns_Invalid_When_Description_Is_Already_Exists()
         {
             var request = new TodoItemAddRequest
             {
@@ -46,8 +47,8 @@ namespace Application.UnitTests.Validators.TodoItems
 
             SetValidationServices(request, FailedValidationService.TodoItemExists);
 
-            _validator
-                .ShouldHaveValidationErrorFor(r => r.Description, request);
+            (await _validator.TestValidateAsync(request))
+                .ShouldHaveValidationErrorFor(r => r.Description);
         }
 
         private enum FailedValidationService
