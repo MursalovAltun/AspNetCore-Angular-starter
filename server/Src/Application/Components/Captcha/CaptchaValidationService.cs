@@ -27,7 +27,7 @@ namespace Application.Components.Captcha
         public async Task<bool> IsValidAsync(string validationToken)
         {
             if (!_options.Enabled) return true;
-            
+
             if (string.IsNullOrEmpty(validationToken))
                 return false;
 
@@ -45,7 +45,7 @@ namespace Application.Components.Captcha
 
             if (data == null) return false;
 
-            var response = (JObject) JsonConvert.DeserializeObject(data);
+            var response = (JObject)JsonConvert.DeserializeObject(data);
             var success = response["success"];
 
             return success?.Value<bool>() ?? false;

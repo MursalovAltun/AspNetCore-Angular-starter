@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application;
 using Application.Auth;
+using Application.Auth.DTO;
 using Application.Auth.Identity;
 using Application.Auth.Webauthn;
 using Application.Exceptions.BadRequest;

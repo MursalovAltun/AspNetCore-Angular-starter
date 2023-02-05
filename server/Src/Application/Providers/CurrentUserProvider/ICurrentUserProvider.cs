@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using EF.Models.Models;
+﻿using EF.Models.Models;
 
 namespace Application.Providers.CurrentUserProvider
 {

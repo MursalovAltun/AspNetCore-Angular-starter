@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application;
 using Application.Auth;
+using Application.Auth.DTO;
 using Application.Auth.Identity;
 using Application.Components.Captcha;
 using Application.Exceptions.BadRequest;
@@ -37,16 +38,16 @@ namespace WebApi.Controllers
             if (user == null)
                 throw new BadRequestException(ErrorCodes.LOGIN_FAILED);
 
-            // var captchaRequiredUntil = await _userAccessFailedService.IsCaptchaRequired(user);
-            // if (captchaRequiredUntil != null)
-            // {
-            //     var isTokenValid = await _captchaValidationService.IsValidAsync(request.CaptchaToken);
-            //     if (!isTokenValid)
-            //         throw new BadRequestException(ErrorCodes.LOGIN_FAILED, new AuthenticateUnauthorizedResult
-            //         {
-            //             CaptchaRequiredUntil = captchaRequiredUntil,
-            //         });
-            // }
+            var captchaRequiredUntil = await _userAccessFailedService.IsCaptchaRequired(user);
+            if (captchaRequiredUntil != null)
+            {
+                var isTokenValid = await _captchaValidationService.IsValidAsync(request.CaptchaToken);
+                if (!isTokenValid)
+                    throw new BadRequestException(ErrorCodes.LOGIN_FAILED, new AuthenticateUnauthorizedResult
+                    {
+                        CaptchaRequiredUntil = captchaRequiredUntil,
+                    });
+            }
 
             var isValid = await _userManager.CheckPasswordAsync(user, request.Password);
 

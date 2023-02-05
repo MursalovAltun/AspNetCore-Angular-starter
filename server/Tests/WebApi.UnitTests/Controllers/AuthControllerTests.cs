@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Application;
 using Application.Auth;
+using Application.Auth.DTO;
 using Application.Auth.Identity;
 using Application.Components.Captcha;
 using Application.Exceptions.BadRequest;

@@ -1,4 +1,3 @@
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -18,9 +17,7 @@ namespace WebApi.Configurations
                         .Build();
                     options.Filters.Add(new AuthorizeFilter(authorizationPolicy));
                     options.Filters.Add<BadRequestExceptionFilter>();
-                })
-                .AddFluentValidation()
-                .AddNewtonsoftJson();
+                });
 
             return services;
         }

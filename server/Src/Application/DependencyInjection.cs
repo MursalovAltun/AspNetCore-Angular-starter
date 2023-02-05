@@ -14,6 +14,8 @@ using EF.Models.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using FluentValidation;
 
 namespace Application
 {
@@ -24,6 +26,10 @@ namespace Application
             services.AddEfModels(configuration);
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddHttpContextAccessor();
 
@@ -70,7 +76,7 @@ namespace Application
 
             var pushNotificationsConfiguration = configuration.GetSection("PushNotifications");
             services.ConfigureAndValidate<PushNotificationsConfiguration>(pushNotificationsConfiguration);
-            
+
             if (pushNotificationsConfiguration.Get<PushNotificationsConfiguration>()?.UseMailHog ?? false)
             {
                 services.AddScoped<IPushNotificationsClient, MailHogPushNotificationsClient>();
@@ -79,7 +85,7 @@ namespace Application
             {
                 services.AddScoped<IPushNotificationsClient, PushNotificationsClient>();
             }
-            
+
             var emailConfiguration = configuration.GetSection("EmailConfiguration");
             services.ConfigureAndValidate<EmailConfiguration>(emailConfiguration);
 

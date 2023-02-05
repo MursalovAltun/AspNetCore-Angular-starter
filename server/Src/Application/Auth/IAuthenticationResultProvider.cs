@@ -1,3 +1,4 @@
+using Application.Auth.DTO;
 using EF.Models.Models;
 
 namespace Application.Auth

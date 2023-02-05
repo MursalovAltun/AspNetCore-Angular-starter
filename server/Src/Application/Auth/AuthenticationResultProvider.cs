@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Application.Auth.DTO;
 using Autofac.Extras.RegistrationAttributes.RegistrationAttributes;
 using EF.Models.Models;
 using Microsoft.Extensions.Options;

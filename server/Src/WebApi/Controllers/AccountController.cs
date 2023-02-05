@@ -1,9 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Application.Auth;
-using Application.Auth.Account;
+using Application.Auth.Account.Commands.CreateAccount;
+using Application.Auth.Account.DTO;
+using Application.Auth.DTO;
 using Application.Auth.Identity;
 using Application.Providers.CurrentUserProvider;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,19 +16,19 @@ namespace WebApi.Controllers
     [Route("api/[controller]/[action]")]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountService _accountService;
+        private readonly ISender _sender;
         private readonly IAuthenticationResultProvider _authenticationResultProvider;
         private readonly ICurrentUserProvider _currentUserProvider;
         private readonly IMapper _mapper;
         private readonly IUserManager _userManager;
 
-        public AccountController(IAccountService accountService,
+        public AccountController(ISender sender,
             IAuthenticationResultProvider authenticationResultProvider,
             ICurrentUserProvider currentUserProvider,
             IMapper mapper,
             IUserManager userManager)
         {
-            _accountService = accountService;
+            _sender = sender;
             _authenticationResultProvider = authenticationResultProvider;
             _currentUserProvider = currentUserProvider;
             _mapper = mapper;
@@ -34,9 +37,9 @@ namespace WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<AuthenticateResult> Create([FromBody] AccountCreateRequest request)
+        public async Task<AuthenticateResult> Create([FromBody] CreateAccountCommand request)
         {
-            var user = await _accountService.Create(request);
+            var user = await _sender.Send(request);
 
             return _authenticationResultProvider.Get(user);
         }

@@ -1,6 +1,4 @@
-using System;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using EF.Models.Models;
 using Microsoft.AspNetCore.Identity;
 

@@ -36,7 +36,7 @@ namespace Application.ExternalApi.TodoItems
 
             var content = await httpResult.Content.ReadAsStringAsync();
 
-            var jArray = (JArray) JsonConvert.DeserializeObject(content);
+            var jArray = (JArray)JsonConvert.DeserializeObject(content);
 
             return jArray.ToObject<List<TodoItemDto>>();
         }
@@ -49,7 +49,7 @@ namespace Application.ExternalApi.TodoItems
 
             var content = await httpResult.Content.ReadAsStringAsync();
 
-            var jObject = (JObject) JsonConvert.DeserializeObject(content);
+            var jObject = (JObject)JsonConvert.DeserializeObject(content);
 
             return jObject.ToObject<TodoItemDto>();
         }
@@ -65,9 +65,9 @@ namespace Application.ExternalApi.TodoItems
                 LastModified = _dateTimeProvider.UtcNow
             };
             var content = new StringContent(JsonConvert.SerializeObject(todoItemDto, new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                }),
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            }),
                 Encoding.UTF8, "application/json");
             var httpResult = await _client.PostAsync("/todo-items", content);
 
@@ -82,9 +82,9 @@ namespace Application.ExternalApi.TodoItems
             todoItemDto.Done = request.Done;
             todoItemDto.LastModified = _dateTimeProvider.UtcNow;
             var content = new StringContent(JsonConvert.SerializeObject(todoItemDto, new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                }),
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            }),
                 Encoding.UTF8, "application/json");
             var httpResult = await _client.PutAsync($"/todo-items/{request.TodoItemId}", content);
 
@@ -99,9 +99,9 @@ namespace Application.ExternalApi.TodoItems
             todoItemDto.Description = request.Description;
             todoItemDto.LastModified = _dateTimeProvider.UtcNow;
             var content = new StringContent(JsonConvert.SerializeObject(todoItemDto, new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                }),
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            }),
                 Encoding.UTF8, "application/json");
             var httpResult = await _client.PutAsync($"/todo-items/{request.Id}", content);
 
